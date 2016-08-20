@@ -19,8 +19,7 @@
                 <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
                 <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
             </select>
-            <button type="button" v-if="cards!=null" v-on:click="addOrUpdateCards">Add or update with Trello cards</button>
-            <button type="button" v-if="cards!=null" v-on:click="deleteUselessCards">Delete cards not in column</button>
+            <button type="button" v-if="cards!=null" v-on:click="refresh">Refresh</button>
 
         </div>
         <div id="dependancyGraph" style="height:400px; background-color: #DAE4E4;"></div>

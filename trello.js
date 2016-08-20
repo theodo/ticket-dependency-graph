@@ -22,9 +22,7 @@ var t = new Vue({
         selectedList: function(val, oldVal) {
             var vm = this;
             if (0 < val.length) {
-                Trello.get('/lists/' + val +'/cards').then(function(data) {
-                    vm.cards = data;
-                })
+                vm.refresh()
             }
         }
     },
@@ -54,11 +52,19 @@ var t = new Vue({
             })
         },
 
+        refresh: function() {
+            var vm = this;
+            Trello.get('/lists/' + this.selectedList +'/cards').then(function(data) {
+                vm.cards = data;
+                vm.deleteUselessCards();
+                vm.addOrUpdateCards();
+            })
+        },
+
         addOrUpdateCards: function() {
             for (var i = 0; i < this.cards.length; i++) {
                 var card = this.cards[i];
                 main.addOrUpdateTicket(card.idShort, card.name)
-                console.log(card.idShort + " - " + card.name)
             }
         },
 
