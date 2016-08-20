@@ -42,7 +42,8 @@ new Vue({
         currentParent: '',
         currentChild: '',
         newTicketId: '',
-        newTicketName: ''
+        newTicketName: '',
+        dataAsJson: ''
     },
 
     methods: {
@@ -60,7 +61,10 @@ new Vue({
             var newTicket = { key: ticketId, name: ticketName};
             myDiagram.model.addNodeData(newTicket);
             myDiagram.commitTransaction("Add ticket");
-        }
+        },
 
+        saveData: function() {
+            this.dataAsJson = myDiagram.model.toJson();
+        },
     }
 })

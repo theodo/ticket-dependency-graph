@@ -33,6 +33,13 @@
                 <label for="ticketName">Ticket name:</label><input id="ticketName" type="text" v-model="newTicketName"></input>
                 <button type="submit">Add ticket</button>
             </form>
+            <form>
+                <button type="button" v-on:click="saveData">Export to JSON</button>
+            </form>
+            <textarea v-if="dataAsJson!=''" style="width:100%;height:250px">
+                {{ dataAsJson }}
+            </textarea>
+
         </div>
         <script src="app.js"></script>
         <script src="trello.js"></script>
