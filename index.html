@@ -33,6 +33,7 @@
                 <label for="ticketId">Ticket id:</label><input id="ticketId" type="text" v-model="newTicketId"></input>
                 <label for="ticketName">Ticket name:</label><input id="ticketName" type="text" v-model="newTicketName"></input>
                 <button type="submit">Add or update ticket</button>
+                <button type="button" v-on:click="removeTicket(newTicketId)">Delete ticket</button>
             </form>
             <form>
                 <button type="button" v-on:click="saveData">Export to JSON</button>

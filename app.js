@@ -70,6 +70,15 @@ var main = new Vue({
             }
         },
 
+        removeTicket: function(ticketId) {
+            currentNode = myDiagram.findNodeForKey(ticketId)
+            if (null != currentNode) {
+                myDiagram.startTransaction("Remove ticket");
+                myDiagram.remove(currentNode)
+                myDiagram.commitTransaction("Remove ticket");
+            }
+        },
+
         saveData: function() {
             this.dataAsJson = myDiagram.model.toJson();
         },
