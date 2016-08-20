@@ -35,7 +35,7 @@ myModel.linkDataArray =
 
 myDiagram.model = myModel;
 
-new Vue({
+var main = new Vue({
     el: '#graphHandler',
 
     data: {
@@ -56,11 +56,18 @@ new Vue({
             myDiagram.commitTransaction("Add dependancy");
         },
 
-        addTicket: function(ticketId, ticketName) {
-            myDiagram.startTransaction("Add ticket");
-            var newTicket = { key: ticketId, name: ticketName};
-            myDiagram.model.addNodeData(newTicket);
-            myDiagram.commitTransaction("Add ticket");
+        addOrUpdateTicket: function(ticketId, ticketName) {
+            currentNode = myDiagram.model.findNodeDataForKey(ticketId)
+            if (null == currentNode) {
+                myDiagram.startTransaction("Add ticket");
+                var newTicket = { key: ticketId, name: ticketName};
+                myDiagram.model.addNodeData(newTicket);
+                myDiagram.commitTransaction("Add ticket");
+            } else {
+                myDiagram.startTransaction("Update ticket");
+                myDiagram.model.setDataProperty(currentNode, "name", ticketName);
+                myDiagram.commitTransaction("Update ticket");
+            }
         },
 
         saveData: function() {
