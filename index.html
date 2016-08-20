@@ -9,6 +9,18 @@
         <script src="https://api.trello.com/1/client.js?key=9685b92ee42080b94102b49fe50d2bb1"></script>
     </head>
     <body>
+        <div id="trello">
+            <button type="button" v-on:click="authorize">Connect to Trello</button>
+            <select v-model="selectedBoard" v-if="authenticated">
+                <option value="" disabled selected style="display: none;">Choose a board</option>
+                <option v-for="board in boards" v-bind:value="board.id">{{ board.name }}</option>
+            </select>
+            <select v-model="selectedList" v-if="lists!=null">
+                <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
+                <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
+            </select>
+            <button type="button" v-if="cards!=null" v-on:click="populate">Populate with cards</button>
+        </div>
         <div id="dependancyGraph" style="height:400px; background-color: #DAE4E4;"></div>
         <div id="graphHandler">
             The ticket id <input type="text" v-model="currentChild"></input> depends on the ticket
@@ -16,5 +28,6 @@
             <button type="button" v-on:click="addDependancy">Add dependancy</button>
         </div>
         <script src="app.js"></script>
+        <script src="trello.js"></script>
     </body>
 </html>
