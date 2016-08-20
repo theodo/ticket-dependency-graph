@@ -65,6 +65,5 @@ var t = new Vue({
                 console.log(card.idShort + " - " + card.name)
             }
         }
-
     }
 })

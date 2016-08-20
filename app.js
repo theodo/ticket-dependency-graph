@@ -40,17 +40,27 @@ new Vue({
 
     data: {
         currentParent: '',
-        currentChild: ''
+        currentChild: '',
+        newTicketId: '',
+        newTicketName: ''
     },
 
     methods: {
-        addDependancy: function() {
+        addDependancy: function(parent, child) {
             myDiagram.startTransaction("Add dependancy");
             myDiagram.model.addLinkData({
-                from: parseInt(this.currentParent),
-                to: parseInt(this.currentChild)
+                from: parseInt(parent),
+                to: parseInt(child)
             })
             myDiagram.commitTransaction("Add dependancy");
+        },
+
+        addTicket: function(ticketId, ticketName) {
+            myDiagram.startTransaction("Add ticket");
+            var newTicket = { key: ticketId, name: ticketName};
+            myDiagram.model.addNodeData(newTicket);
+            myDiagram.commitTransaction("Add ticket");
         }
+
     }
 })

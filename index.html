@@ -23,9 +23,16 @@
         </div>
         <div id="dependancyGraph" style="height:400px; background-color: #DAE4E4;"></div>
         <div id="graphHandler">
-            The ticket id <input type="text" v-model="currentChild"></input> depends on the ticket
-            <input type="text" v-model="currentParent"></input>
-            <button type="button" v-on:click="addDependancy">Add dependancy</button>
+            <form v-on:submit.prevent="addDependancy(currentParent, currentChild)">
+                The ticket id <input type="text" v-model="currentChild"></input> depends on the ticket
+                <input type="text" v-model="currentParent"></input>
+                <button type="submit">Add dependancy</button>
+            </form>
+            <form v-on:submit.prevent="addTicket(newTicketId,newTicketName)">
+                <label for="ticketId">Ticket id:</label><input id="ticketId" type="text" v-model="newTicketId"></input>
+                <label for="ticketName">Ticket name:</label><input id="ticketName" type="text" v-model="newTicketName"></input>
+                <button type="submit">Add ticket</button>
+            </form>
         </div>
         <script src="app.js"></script>
         <script src="trello.js"></script>
