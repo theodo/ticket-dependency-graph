@@ -39,7 +39,7 @@ var trelloHandler = new Vue({
               scope: {
                 read: 'true',
                 write: 'true' },
-              expiration: '1hour',
+              expiration: 'never',
               success: this.authSuccessHandler,
               error: function() {
                   console.warn("Failed authentication")
