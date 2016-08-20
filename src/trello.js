@@ -1,3 +1,5 @@
+var Vue = require('vue');
+require('./trelloClient.js');
 var t = new Vue({
     el: "#trello",
 

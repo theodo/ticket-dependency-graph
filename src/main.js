@@ -1,3 +1,6 @@
+var go = require('gojs');
+var Vue = require('vue');
+require('./trello.js');
 var GO = go.GraphObject.make;
 var myDiagram = GO(go.Diagram, "dependancyGraph", {
     initialContentAlignment: go.Spot.Center,
