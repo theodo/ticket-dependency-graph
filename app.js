@@ -33,6 +33,10 @@ myModel.linkDataArray =
     { from: 3, to: 4 }
 ];
 
+myDiagram.linkTemplate =
+  GO(go.Link,
+    GO(go.Shape, { strokeWidth: 3, stroke: "#555" }));
+
 myDiagram.model = myModel;
 
 var main = new Vue({
