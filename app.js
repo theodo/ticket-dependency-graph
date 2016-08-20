@@ -79,6 +79,10 @@ var main = new Vue({
             }
         },
 
+        getNodes: function() {
+            return myDiagram.model.nodeDataArray;
+        },
+
         saveData: function() {
             this.dataAsJson = myDiagram.model.toJson();
         },

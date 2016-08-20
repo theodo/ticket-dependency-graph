@@ -1,8 +1,3 @@
-var authenticationSuccess = function() { console.log("Successful authentication"); };
-var authenticationFailure = function() { console.log("Failed authentication"); };
-
-
-
 var t = new Vue({
     el: "#trello",
 
@@ -60,11 +55,34 @@ var t = new Vue({
         },
 
         addOrUpdateCards: function() {
-            for (i = 0; i < this.cards.length; i++) {
+            for (var i = 0; i < this.cards.length; i++) {
                 var card = this.cards[i];
                 main.addOrUpdateTicket(card.idShort, card.name)
                 console.log(card.idShort + " - " + card.name)
             }
+        },
+
+        deleteUselessCards: function() {
+            var nodes = main.getNodes();
+            var toBeRemoved = [];
+            for (var i = 0; i < nodes.length; i++) {
+                var node = nodes[i]
+                if (!this.isTicketIdInList(node.key)) {
+                    toBeRemoved.push(node.key)
+                }
+            }
+            for (var i = 0; i < toBeRemoved.length; i++) {
+                main.removeTicket(toBeRemoved[i])
+            }
+        },
+
+        isTicketIdInList: function(ticketId) {
+            for (var i = 0; i < this.cards.length; i++) {
+                if (this.cards[i].idShort == ticketId) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 })
