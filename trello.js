@@ -59,9 +59,10 @@ var t = new Vue({
             })
         },
 
-        populate: function() {
+        addOrUpdateCards: function() {
             for (i = 0; i < this.cards.length; i++) {
                 var card = this.cards[i];
+                main.addOrUpdateTicket(card.idShort, card.name)
                 console.log(card.idShort + " - " + card.name)
             }
         }
