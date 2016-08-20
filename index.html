@@ -1,0 +1,20 @@
+<!DOCTYPE html>  <!-- HTML5 document type -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ticket Dependancy Graph</title>
+        <script src="go-debug.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="https://api.trello.com/1/client.js?key=9685b92ee42080b94102b49fe50d2bb1"></script>
+    </head>
+    <body>
+        <div id="dependancyGraph" style="height:400px; background-color: #DAE4E4;"></div>
+        <div id="graphHandler">
+            The ticket id <input type="text" v-model="currentChild"></input> depends on the ticket
+            <input type="text" v-model="currentParent"></input>
+            <button type="button" v-on:click="addDependancy">Add dependancy</button>
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>
