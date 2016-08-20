@@ -1,6 +1,8 @@
 var Vue = require('vue');
-require('./trelloClient.js');
-var t = new Vue({
+require('./trelloApiHelper.js');
+require('./graphHandler.js')
+
+var trelloHandler = new Vue({
     el: "#trello",
 
     data: {
@@ -66,12 +68,12 @@ var t = new Vue({
         addOrUpdateCards: function() {
             for (var i = 0; i < this.cards.length; i++) {
                 var card = this.cards[i];
-                main.addOrUpdateTicket(card.idShort, card.name)
+                window.graphHandler.addOrUpdateTicket(card.idShort, card.name)
             }
         },
 
         deleteUselessCards: function() {
-            var nodes = main.getNodes();
+            var nodes = window.graphHandler.getNodes();
             var toBeRemoved = [];
             for (var i = 0; i < nodes.length; i++) {
                 var node = nodes[i]
@@ -80,7 +82,7 @@ var t = new Vue({
                 }
             }
             for (var i = 0; i < toBeRemoved.length; i++) {
-                main.removeTicket(toBeRemoved[i])
+                window.window.graphHandler.removeTicket(toBeRemoved[i])
             }
         },
 
