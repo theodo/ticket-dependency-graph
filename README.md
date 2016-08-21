@@ -1,4 +1,8 @@
 #ticket-dependency-graph
+Use this tool with Trello to visualize the dependencies between your tickets
+
+##Demo
+Link for [live demo](https://varal7.github.io/ticket-dependency-graph/)
 
 ##Installation
 ```
