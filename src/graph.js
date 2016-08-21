@@ -9,14 +9,17 @@ window.myDiagram = GO(go.Diagram, "dependancyGraph", {
 
 window.myDiagram.nodeTemplate = GO(
     go.Node,
-    "Horizontal",
-    { background: "#2221AD" },
-    GO(go.TextBlock, { margin: 12, stroke: "yellow", font: "bold 16px sans-serif" },
-    new go.Binding("text", "key")),
-    GO(go.TextBlock, { margin: 12, stroke: "#64AD35", font: "bold 14px sans-serif" },
-    new go.Binding("text", "complexity")),
-    GO(go.TextBlock, { margin: 8, stroke: "white", font: "bold 10px sans-serif",  width: 100, wrap: go.TextBlock.WrapFit },
-    new go.Binding("text", "name"))
+    "Auto",
+    { isShadowed: true, shadowColor: "#C5C1AA" },
+    GO(go.Shape, "RoundedRectangle", { strokeWidth: 0, fill: "white"}),
+    GO(go.Panel, "Horizontal",
+        GO(go.TextBlock, { margin: 12, font: "bold 20px sans-serif" },
+        new go.Binding("text", "key")),
+        GO(go.TextBlock, { margin: 12, stroke: "#64AD35", font: "bold 14px sans-serif" },
+        new go.Binding("text", "complexity")),
+        GO(go.TextBlock, { margin: 8, font: "bold 10px sans-serif",  width: 100, wrap: go.TextBlock.WrapFit },
+        new go.Binding("text", "name"))
+    )
 );
 
 //To be populated with Trello
@@ -38,6 +41,6 @@ myModel.linkDataArray =
 
 window.myDiagram.linkTemplate =
   GO(go.Link,
-    GO(go.Shape, { strokeWidth: 3, stroke: "#555" }));
+    GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
 
 window.myDiagram.model = myModel;
