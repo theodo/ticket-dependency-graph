@@ -33,6 +33,8 @@ window.graphHandler = new Vue({
                 to: parseInt(child)
             })
             window.myDiagram.commitTransaction("Add dependancy");
+            this.currentChild = '';
+            this.currentParent = '';
         },
 
         addOrUpdateTicket: function(ticketId, ticketName) {

@@ -3,36 +3,67 @@
     <head>
         <meta charset="UTF-8">
         <title>Ticket Dependancy Graph</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     </head>
     <body>
-        <div id="trello">
-            <button type="button" v-on:click="authorize">Connect to Trello</button>
-            <select v-model="selectedBoard" v-if="authenticated">
-                <option value="" disabled selected style="display: none;">Choose a board</option>
-                <option v-for="board in boards" v-bind:value="board.id">{{ board.name }}</option>
-            </select>
-            <select v-model="selectedList" v-if="lists!=null">
-                <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
-                <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
-            </select>
-            <button type="button" v-if="cards!=null" v-on:click="refresh">Refresh</button>
-
-        </div>
-        <div id="dependancyGraph" style="height:400px; background-color: #DAE4E4;"></div>
-        <div id="graphHandler">
-            <form v-on:submit.prevent="addDependancy(currentParent, currentChild)">
-                The ticket id <input type="text" v-model="currentChild"></input> depends on the ticket
-                <input type="text" v-model="currentParent"></input>
-                <button type="submit">Add dependancy</button>
-            </form>
-            <form>
-                <button type="button" v-on:click="saveData">Export to JSON</button>
-            </form>
-            <textarea v-if="dataAsJson!=''" style="width:100%;height:250px">
-                {{ dataAsJson }}
-            </textarea>
-
+        <div class="container">
+            <div id="trello">
+                <div v-if="authenticated && boards==null" class="progress">
+                    <div class="indeterminate"></div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <button type="button" class="btn" v-on:click="authorize" v-if="boards==null">Connect to Trello</button>
+                        <button type="button" class="btn center-align" v-if="cards!=null" v-on:click="refresh">Refresh</button>
+                    </div>
+                    <div class="input-field col s4">
+                    </div>
+                    <div class="input-field col s4">
+                        <button class="btn right" type="button" v-on:click="saveData">Export to JSON</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col m6 s12">
+                        <select v-model="selectedBoard" v-if="boards!=null" class="browser-default">
+                            <option value="" disabled selected style="display: none;">Choose a board</option>
+                            <option v-for="board in boards" v-bind:value="board.id">{{ board.name }}</option>
+                        </select>
+                    </div>
+                    <div class="input-field col m6 s12">
+                        <select v-model="selectedList" v-if="lists!=null" class="browser-default">
+                            <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
+                            <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="dependancyGraph" style="height:600px; background-color: #DAE4E4;"></div>
+            <div class="row" id="graphHandler">
+                <form v-on:submit.prevent="addDependancy(currentParent, currentChild)">
+                    <div class="row">
+                        <div class="input-field col m6 s12">
+                            <label for="child">The ticket id</label>
+                            <input id="child" type="text" v-model="currentChild"/>
+                        </div>
+                        <div class="input-field col m6 s12">
+                            <label for="parent">depends on the ticket</label>
+                            <input id="parent" type="text" v-model="currentParent"/>
+                        </div>
+                    </div>
+                    <button class="right btn waves-effect waves-light center-align" type="submit">Add dependancy</button>
+                </form>
+                <div class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea v-if="dataAsJson!=''" style="width:100%;height:250px">
+                                {{ dataAsJson }}
+                            </textarea>
+                    </div>
+                </div>
+            </div>
         </div>
         <script src="dist/app.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     </body>
 </html>

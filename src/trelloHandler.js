@@ -82,7 +82,7 @@ var trelloHandler = new Vue({
                 }
             }
             for (var i = 0; i < toBeRemoved.length; i++) {
-                window.window.graphHandler.removeTicket(toBeRemoved[i])
+                window.graphHandler.removeTicket(toBeRemoved[i])
             }
         },
 
@@ -93,6 +93,10 @@ var trelloHandler = new Vue({
                 }
             }
             return false;
+        },
+
+        saveData: function() {
+            window.graphHandler.saveData()
         }
     }
 })
