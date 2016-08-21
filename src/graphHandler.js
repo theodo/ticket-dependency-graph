@@ -4,7 +4,7 @@ var getComplexityFromName = function(name) {
     if (name[0] != '(') {
         return null;
     }
-    return res = parseInt(name.split(")")[0].split("(")[1]);
+    return res = name.split(")")[0].split("(")[1];
 }
 
 var getNameWithoutComplexity = function(name) {
