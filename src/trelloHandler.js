@@ -33,6 +33,7 @@ var trelloHandler = new Vue({
 
     methods: {
         authorize: function() {
+            Trello.deauthorize(); //Fix this
             Trello.authorize({
               type: 'popup',
               name: 'Ticket Dependancy Graph',
