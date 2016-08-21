@@ -1,5 +1,5 @@
 {
-  "name": "ticket-dependancy-graph",
+  "name": "ticket-dependency-graph",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Varal7/ticket-dependancy-graph.git"
+    "url": "git+https://github.com/Varal7/ticket-dependency-graph.git"
   },
   "author": "varal7",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Varal7/ticket-dependancy-graph/issues"
+    "url": "https://github.com/Varal7/ticket-dependency-graph/issues"
   },
-  "homepage": "https://github.com/Varal7/ticket-dependancy-graph#readme",
+  "homepage": "https://github.com/Varal7/ticket-dependency-graph#readme",
   "devDependencies": {
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.14.1"

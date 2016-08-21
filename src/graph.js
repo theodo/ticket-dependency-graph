@@ -1,6 +1,6 @@
 var go = require('gojs');
 var GO = go.GraphObject.make;
-window.myDiagram = GO(go.Diagram, "dependancyGraph", {
+window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
     allowCopy: false,
     "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
@@ -37,18 +37,22 @@ window.myDiagram.nodeTemplate = GO(
 //To be populated with Trello
 var myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
-    { key: 1 , complexity: 13, name: "ETQU, j'ai un arbre de dépendances"},
-    { key: 2 , complexity: 8, name: "ETQU, j'ai la liste des tickets de mon board"},
-    { key: 3 , complexity: 1, name: "ETQU, j'ai un arbre de dépendances avec les tickets de mon boards"},
-    { key: 4 , complexity: 21, name: "ETQVictor, je réussis mon PISCAR"},
-    { key: 5 , complexity: null, name: "ETQDev, j'ai accès à l'API TRello"},
+    { key: 1 , complexity: 13, name: "Connect to Trello to use the TDG"},
+    { key: 2 , complexity: 5, name: "Choose a board, a list, and you're good to go!"},
+    { key: 3 , complexity: 8, name: "You can add a link between two tickets given their id using the form below"},
+    { key: 4 , complexity: 1, name: "Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on"},
+    { key: 5 , complexity: 0.5, name: "To delete a link, select it with your mouse and press the Delete key"},
+    { key: 6 , complexity: null, name: "You can use your OS Undo/Redo shortcuts if necessary"},
+    { key: 7 , complexity: null, name: "Enjoy!"},
 ];
 
 myModel.linkDataArray =
 [
-    { from: 1, to: 3 },
+    { from: 1, to: 2 },
     { from: 2, to: 3 },
-    { from: 3, to: 4 }
+    { from: 2, to: 4 },
+    { from: 3, to: 5 },
+    { from: 4, to: 5 }
 ];
 
 window.myDiagram.linkTemplate =
