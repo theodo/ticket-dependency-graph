@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ticket Dependancy Graph</title>
+        <title>Ticket Dependency Graph</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     </head>
     <body>
@@ -37,9 +37,9 @@
                     </div>
                 </div>
             </div>
-            <div id="dependancyGraph" style="height:600px; background-color: #E0E2E4;"></div>
+            <div id="dependencyGraph" style="height:600px; background-color: #E0E2E4;"></div>
             <div class="row" id="graphHandler">
-                <form v-on:submit.prevent="addDependancy(currentParent, currentChild)">
+                <form v-on:submit.prevent="addDependency(currentParent, currentChild)">
                     <div class="row">
                         <div class="input-field col m6 s12">
                             <label for="child">The ticket id</label>
@@ -50,7 +50,7 @@
                             <input id="parent" type="text" v-model="currentParent"/>
                         </div>
                     </div>
-                    <button class="right btn waves-effect waves-light center-align" type="submit">Add dependancy</button>
+                    <button class="right btn waves-effect waves-light center-align" type="submit">Add dependency</button>
                 </form>
                 <div class="col s12">
                     <div class="row">

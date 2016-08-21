@@ -26,13 +26,13 @@ window.graphHandler = new Vue({
     },
 
     methods: {
-        addDependancy: function(parent, child) {
-            window.myDiagram.startTransaction("Add dependancy");
+        addDependency: function(parent, child) {
+            window.myDiagram.startTransaction("Add dependency");
             window.myDiagram.model.addLinkData({
                 from: parseInt(parent),
                 to: parseInt(child)
             })
-            window.myDiagram.commitTransaction("Add dependancy");
+            window.myDiagram.commitTransaction("Add dependency");
             this.currentChild = '';
             this.currentParent = '';
         },

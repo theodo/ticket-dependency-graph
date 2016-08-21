@@ -1,6 +1,6 @@
 var go = require('gojs');
 var GO = go.GraphObject.make;
-window.myDiagram = GO(go.Diagram, "dependancyGraph", {
+window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
     allowCopy: false,
     "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
