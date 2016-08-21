@@ -38,7 +38,7 @@ var trelloHandler = new Vue({
               name: 'Ticket Dependancy Graph',
               scope: {
                 read: 'true',
-                write: 'true' },
+                write: 'false' },
               expiration: 'never',
               success: this.authSuccessHandler,
               error: function() {
