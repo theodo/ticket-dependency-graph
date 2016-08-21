@@ -2,6 +2,7 @@ var go = require('gojs');
 var GO = go.GraphObject.make;
 window.myDiagram = GO(go.Diagram, "dependancyGraph", {
     initialContentAlignment: go.Spot.Center,
+    allowCopy: false,
     "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
     layout: GO(go.LayeredDigraphLayout,
         { angle: 90, layerSpacing: 10 })
@@ -11,6 +12,17 @@ window.myDiagram.nodeTemplate = GO(
     go.Node,
     "Auto",
     { isShadowed: true, shadowColor: "#C5C1AA" },
+    {
+        mouseDrop: function (e, node) {
+            var diagram = node.diagram;
+            var selnode = diagram.selection.first();  // assume just one Node in selection
+            if (selnode instanceof go.Node) {
+                var selKey = selnode.key;
+                var nodeKey = node.key;
+                diagram.toolManager.linkingTool.insertLink(node, node.port, selnode, selnode.port);
+            }
+        }
+    },
     GO(go.Shape, "RoundedRectangle", { strokeWidth: 0, fill: "white"}),
     GO(go.Panel, "Horizontal",
         GO(go.TextBlock, { margin: 12, font: "bold 20px sans-serif" },
