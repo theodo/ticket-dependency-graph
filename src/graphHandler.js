@@ -70,5 +70,9 @@ window.graphHandler = new Vue({
         saveData: function() {
             this.dataAsJson = window.myDiagram.model.toJson();
         },
+
+        loadData: function() {
+            window.myDiagram.model = go.Model.fromJson(this.dataAsJson);
+        }
     }
 })

@@ -55,10 +55,11 @@
                 <div class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea v-if="dataAsJson!=''" style="width:100%;height:250px">
-                                {{ dataAsJson }}
+                            <textarea id="dataAsJson" v-model="dataAsJson" v-if="dataAsJson!=''" style="width:100%;height:250px">
                             </textarea>
+                        </div>
                     </div>
+                    <button class="right btn waves-effect waves-light center-align" v-if="dataAsJson!=''" v-on:click="loadData">Load Json</button>
                 </div>
             </div>
         </div>
