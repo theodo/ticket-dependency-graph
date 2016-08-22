@@ -27,13 +27,17 @@ window.graphHandler = new Vue({
 
     methods: {
         addDependency: function(parent, child) {
+            this.addGraphDependency(parent, child);
+            window.trelloHandler.addTrelloDependency(parent, child);
+        },
+
+        addGraphDependency: function(parent, child) {
             window.myDiagram.startTransaction("Add dependency");
             window.myDiagram.model.addLinkData({
                 from: parseInt(parent),
                 to: parseInt(child)
             })
             window.myDiagram.commitTransaction("Add dependency");
-            window.trelloHandler.addDependency(parent, child);
 
             this.currentChild = '';
             this.currentParent = '';

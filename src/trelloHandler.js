@@ -100,7 +100,7 @@ window.trelloHandler = new Vue({
             window.graphHandler.saveData()
         },
 
-        addDependency: function(parentId, childId) {
+        addTrelloDependency: function(parentId, childId) {
             var childCard  = null;
             var parentCard = null;
             if (null == this.cards) {
@@ -127,7 +127,7 @@ window.trelloHandler = new Vue({
             });
         },
 
-        deleteDependency: function(parentId, childId) {
+        deleteTrelloDependency: function(parentId, childId) {
             var vm = this;
             var childCard = null;
             if (null == this.cards) {

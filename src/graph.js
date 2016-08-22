@@ -64,7 +64,7 @@ myDiagram.addDiagramListener("SelectionDeleting", function(e) {
  if (part instanceof go.Link) {
    var childId = part.toNode.data.key;
    var parentId = part.fromNode.data.key;
-   window.trelloHandler.deleteDependency(parentId, childId);
+   window.trelloHandler.deleteTrelloDependency(parentId, childId);
  }
 });
 
