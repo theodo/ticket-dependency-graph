@@ -17,9 +17,7 @@ window.myDiagram.nodeTemplate = GO(
             var diagram = node.diagram;
             var selnode = diagram.selection.first();  // assume just one Node in selection
             if (selnode instanceof go.Node) {
-                var selKey = selnode.key;
-                var nodeKey = node.key;
-                diagram.toolManager.linkingTool.insertLink(node, node.port, selnode, selnode.port);
+                window.graphHandler.addDependency(node.data.key, selnode.data.key);
             }
         }
     },
