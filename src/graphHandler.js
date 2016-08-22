@@ -33,6 +33,8 @@ window.graphHandler = new Vue({
                 to: parseInt(child)
             })
             window.myDiagram.commitTransaction("Add dependency");
+            window.trelloHandler.addDependency(parent, child);
+
             this.currentChild = '';
             this.currentParent = '';
         },
