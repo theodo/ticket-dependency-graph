@@ -125,7 +125,57 @@ window.trelloHandler = new Vue({
                 }
                 Trello.post('/checklists/' + checklist.id + '/checkItems', checkItem);
             });
+        },
 
+        deleteDependency: function(parentId, childId) {
+            var vm = this;
+            var childCard = null;
+            if (null == this.cards) {
+                console.warn('Fail deleting dependency in Trello');
+                return false;
+            }
+            for (var i = 0; i < this.cards.length; i++) {
+                if (this.cards[i].idShort == childId) {
+                    childCard = this.cards[i];
+                }
+            }
+            if (null == childCard) {
+                console.warn('Fail deleting dependency in Trello');
+                return false;
+            }
+            this.getOrCreateDependencyChecklist(childCard).then(function(checklist) {
+                ticketIds = vm.getDependentTicketsFromChecklist(checklist);
+                for (var i = 0; i < ticketIds.length; i++) {
+                    if (parseInt(ticketIds[i].ticketId) == parseInt(parentId)) {
+                        Trello.delete('/checklists/' + checklist.id + '/checkItems/' + ticketIds[i].checkItemId);
+                        console.log('Dependency deleted');
+                        return;
+                    }
+                }
+
+            });
+        },
+
+        getDependentTicketsFromChecklist: function(checklist) {
+            var ticketIds = [];
+            if (null == checklist.checkItems) {
+                return ticketIds;
+            }
+            for (var i = 0; i < checklist.checkItems.length; i++) {
+                var checkItem = checklist.checkItems[i];
+                ticketIds.push({
+                    "checkItemId": checkItem.id,
+                    "ticketId": this.getTicketIdFromCheckItemName(checkItem.name)
+                });
+            }
+            return ticketIds;
+        },
+
+        getTicketIdFromCheckItemName: function(checkItemName) {
+            if ("#" == checkItemName[0]) {
+                return checkItemName.split("#")[1];
+            }
+            return checkItemName.split("/")[5].split("-")[0];
         },
 
         getOrCreateDependencyChecklist: function(card) {
@@ -133,7 +183,7 @@ window.trelloHandler = new Vue({
                 Trello.get('/cards/' + card.id + '/checklists').then(function(checklists) {
                     for (var i = 0; i < checklists.length; i++) {
                         if ("Dependencies" == checklists[i].name) {
-                            resolve(checklists[i]);
+                            return resolve(checklists[i]);
                         }
                     }
                     var checklist = {

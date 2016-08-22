@@ -57,4 +57,15 @@ window.myDiagram.linkTemplate =
   GO(go.Link,
     GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
 
+
+myDiagram.addDiagramListener("SelectionDeleting", function(e) {
+ var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
+                               // so we'll get the first since we know we only have one selection
+ if (part instanceof go.Link) {
+   var childId = part.toNode.data.key;
+   var parentId = part.fromNode.data.key;
+   window.trelloHandler.deleteDependency(parentId, childId);
+ }
+});
+
 window.myDiagram.model = myModel;
