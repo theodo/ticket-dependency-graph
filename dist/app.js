@@ -56,7 +56,7 @@
 	__webpack_require__(4);
 	__webpack_require__(6)
 
-	var trelloHandler = new Vue({
+	window.trelloHandler = new Vue({
 	    el: "#trello",
 
 	    data: {
@@ -65,16 +65,21 @@
 	        selectedBoard: null,
 	        lists: null,
 	        selectedList: null,
-	        cards: null
+	        cards: null,
+	        loading: false,
+	        trelloUrl: null,
 	    },
 
 	    watch: {
 	        selectedBoard: function(val, oldVal) {
 	            var vm = this;
 	            if (0 < val.length) {
-	                Trello.get('/boards/' + val +'/lists').then(function(data) {
+	                Trello.get('/boards/' + val + '/lists').then(function(data) {
 	                    vm.lists = data;
-	                })
+	                });
+	                Trello.get('/boards/' + val + '/shortUrl').then(function(data) {
+	                    vm.trelloUrl = data._value;
+	                });
 	            }
 	        },
 	        selectedList: function(val, oldVal) {
@@ -105,18 +110,24 @@
 	        authSuccessHandler: function() {
 	            var vm = this;
 	            console.log("Successful authentication")
-	            this.authenticated = true;
+	            this.loading = true;
 	            Trello.get('/member/me/boards').then(function(data) {
 	                vm.boards = data;
+	                vm.loading = false;
 	            })
 	        },
 
 	        refresh: function() {
 	            var vm = this;
+	            this.loading = true;
 	            Trello.get('/lists/' + this.selectedList +'/cards').then(function(data) {
 	                vm.cards = data;
 	                vm.deleteUselessCards();
 	                vm.addOrUpdateCards();
+	                vm.calculateDependenciesAsPromises().then(function(linkDataArray) {
+	                    window.myDiagram.model.linkDataArray = linkDataArray;
+	                    vm.loading = false;
+	                });
 	            })
 	        },
 
@@ -141,6 +152,45 @@
 	            }
 	        },
 
+	        calculateDependenciesAsPromises: function() {
+	            var vm = this;
+	            var linkDataArray = [];
+	            var promises = [];
+	            for (var iCard = 0; iCard < vm.cards.length; iCard++) {
+	                promises.push(
+	                    new Promise(function(resolve, reject) {
+	                        vm.getOrCreateDependencyChecklist(vm.cards[iCard]).then(function(checklist) {
+	                            var ticketIds = vm.getDependentTicketsFromChecklist(checklist);
+	                            for (var j = 0; j < ticketIds.length; j++) {
+	                                linkDataArray.push({
+	                                    from: ticketIds[j].ticketId,
+	                                    to: vm.getTicketIdFromIdCard(checklist.idCard)
+	                                });
+	                            }
+	                            resolve();
+	                        });
+	                    })
+	                );
+	            }
+	            return new Promise(function(resolve, reject) {
+	                Promise.all(promises).then(function() {
+	                    resolve(linkDataArray);
+	                });
+	            });
+	        },
+
+	        getTicketIdFromIdCard: function(idCard) {
+	            if (null == this.cards) {
+	                return null;
+	            }
+	            for (var i = 0; i < this.cards.length; i++) {
+	                if (this.cards[i].id == idCard) {
+	                    return this.cards[i].idShort;
+	                }
+	            }
+	            return null;
+	        },
+
 	        isTicketIdInList: function(ticketId) {
 	            for (var i = 0; i < this.cards.length; i++) {
 	                if (this.cards[i].idShort == ticketId) {
@@ -150,9 +200,103 @@
 	            return false;
 	        },
 
-	        saveData: function() {
-	            window.graphHandler.saveData()
+	        addTrelloDependency: function(parentId, childId) {
+	            var childCard  = null;
+	            var parentCard = null;
+	            if (null == this.cards) {
+	                console.warn('Fail adding dependency in Trello');
+	                return false;
+	            }
+	            for (var i = 0; i < this.cards.length; i++) {
+	                if (this.cards[i].idShort == childId) {
+	                    childCard = this.cards[i];
+	                }
+	                if (this.cards[i].idShort == parentId) {
+	                    parentCard = this.cards[i];
+	                }
+	            }
+	            if (null == childCard || null == parentCard) {
+	                console.warn('Fail adding dependency in Trello');
+	                return false;
+	            }
+	            this.getOrCreateDependencyChecklist(childCard).then(function(checklist) {
+	                var checkItem = {
+	                    "name": parentCard.url
+	                }
+	                Trello.post('/checklists/' + checklist.id + '/checkItems', checkItem);
+	            });
+	        },
+
+	        deleteTrelloDependency: function(parentId, childId) {
+	            var vm = this;
+	            var childCard = null;
+	            if (null == this.cards) {
+	                console.warn('Fail deleting dependency in Trello');
+	                return false;
+	            }
+	            for (var i = 0; i < this.cards.length; i++) {
+	                if (this.cards[i].idShort == childId) {
+	                    childCard = this.cards[i];
+	                }
+	            }
+	            if (null == childCard) {
+	                console.warn('Fail deleting dependency in Trello');
+	                return false;
+	            }
+	            this.getOrCreateDependencyChecklist(childCard).then(function(checklist) {
+	                ticketIds = vm.getDependentTicketsFromChecklist(checklist);
+	                for (var i = 0; i < ticketIds.length; i++) {
+	                    if (ticketIds[i].ticketId == parentId) {
+	                        Trello.delete('/checklists/' + checklist.id + '/checkItems/' + ticketIds[i].checkItemId);
+	                        console.log('Dependency deleted');
+	                        return;
+	                    }
+	                }
+
+	            });
+	        },
+
+	        getDependentTicketsFromChecklist: function(checklist) {
+	            var ticketIds = [];
+	            if (null == checklist.checkItems) {
+	                return ticketIds;
+	            }
+	            for (var i = 0; i < checklist.checkItems.length; i++) {
+	                var checkItem = checklist.checkItems[i];
+	                ticketIds.push({
+	                    "checkItemId": checkItem.id,
+	                    "ticketId": this.getTicketIdFromCheckItemName(checkItem.name)
+	                });
+	            }
+	            return ticketIds;
+	        },
+
+	        getTicketIdFromCheckItemName: function(checkItemName) {
+	            if ("#" == checkItemName[0]) {
+	                return checkItemName.split("#")[1];
+	            }
+	            return parseInt(checkItemName.split("/")[5].split("-")[0]);
+	        },
+
+	        getOrCreateDependencyChecklist: function(card) {
+	            return new Promise(function(resolve, reject) {
+	                Trello.get('/cards/' + card.id + '/checklists').then(function(checklists) {
+	                    for (var k = 0; k < checklists.length; k++) {
+	                        if ("Dependencies" == checklists[k].name) {
+	                            return resolve(checklists[k]);
+	                        }
+	                    }
+	                    var checklist = {
+	                        "name": "Dependencies",
+	                        "idCard": card.id,
+	                    }
+	                    Trello.post('/checklists/', checklist).then(function(data) {
+	                        resolve(data);
+	                    });
+	                });
+	            });
 	        }
+
 	    }
 	})
 
@@ -20830,12 +20974,18 @@
 
 	    methods: {
 	        addDependency: function(parent, child) {
+	            this.addGraphDependency(parent, child);
+	            window.trelloHandler.addTrelloDependency(parent, child);
+	        },
+
+	        addGraphDependency: function(parent, child) {
 	            window.myDiagram.startTransaction("Add dependency");
 	            window.myDiagram.model.addLinkData({
 	                from: parseInt(parent),
 	                to: parseInt(child)
 	            })
 	            window.myDiagram.commitTransaction("Add dependency");
+
 	            this.currentChild = '';
 	            this.currentParent = '';
 	        },
@@ -20890,7 +21040,6 @@
 	window.myDiagram = GO(go.Diagram, "dependencyGraph", {
 	    initialContentAlignment: go.Spot.Center,
 	    allowCopy: false,
-	    "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
 	    layout: GO(go.LayeredDigraphLayout,
 	        { angle: 90, layerSpacing: 10 })
 	});
@@ -20904,9 +21053,7 @@
 	            var diagram = node.diagram;
 	            var selnode = diagram.selection.first();  // assume just one Node in selection
 	            if (selnode instanceof go.Node) {
-	                var selKey = selnode.key;
-	                var nodeKey = node.key;
-	                diagram.toolManager.linkingTool.insertLink(node, node.port, selnode, selnode.port);
+	                window.graphHandler.addDependency(node.data.key, selnode.data.key);
 	            }
 	        }
 	    },
@@ -20929,7 +21076,7 @@
 	    { key: 3 , complexity: 8, name: "You can add a link between two tickets given their id using the form below"},
 	    { key: 4 , complexity: 1, name: "Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on"},
 	    { key: 5 , complexity: 0.5, name: "To delete a link, select it with your mouse and press the Delete key"},
-	    { key: 6 , complexity: null, name: "You can use your OS Undo/Redo shortcuts if necessary"},
+	    { key: 6 , complexity: null, name: "Dependencies will be stored on your Trello board!"},
 	    { key: 7 , complexity: null, name: "Enjoy!"},
 	];
 
@@ -20945,6 +21092,17 @@
 	window.myDiagram.linkTemplate =
 	  GO(go.Link,
 	    GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
+
+
+	myDiagram.addDiagramListener("SelectionDeleting", function(e) {
+	 var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
+	                               // so we'll get the first since we know we only have one selection
+	 if (part instanceof go.Link) {
+	   var childId = part.toNode.data.key;
+	   var parentId = part.fromNode.data.key;
+	   window.trelloHandler.deleteTrelloDependency(parentId, childId);
+	 }
+	});
 
 	window.myDiagram.model = myModel;
 

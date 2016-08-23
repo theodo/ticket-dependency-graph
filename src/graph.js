@@ -3,7 +3,6 @@ var GO = go.GraphObject.make;
 window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
     allowCopy: false,
-    "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
     layout: GO(go.LayeredDigraphLayout,
         { angle: 90, layerSpacing: 10 })
 });
@@ -17,9 +16,7 @@ window.myDiagram.nodeTemplate = GO(
             var diagram = node.diagram;
             var selnode = diagram.selection.first();  // assume just one Node in selection
             if (selnode instanceof go.Node) {
-                var selKey = selnode.key;
-                var nodeKey = node.key;
-                diagram.toolManager.linkingTool.insertLink(node, node.port, selnode, selnode.port);
+                window.graphHandler.addDependency(node.data.key, selnode.data.key);
             }
         }
     },
@@ -42,7 +39,7 @@ myModel.nodeDataArray = [
     { key: 3 , complexity: 8, name: "You can add a link between two tickets given their id using the form below"},
     { key: 4 , complexity: 1, name: "Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on"},
     { key: 5 , complexity: 0.5, name: "To delete a link, select it with your mouse and press the Delete key"},
-    { key: 6 , complexity: null, name: "You can use your OS Undo/Redo shortcuts if necessary"},
+    { key: 6 , complexity: null, name: "Dependencies will be stored on your Trello board!"},
     { key: 7 , complexity: null, name: "Enjoy!"},
 ];
 
@@ -58,5 +55,16 @@ myModel.linkDataArray =
 window.myDiagram.linkTemplate =
   GO(go.Link,
     GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
+
+
+myDiagram.addDiagramListener("SelectionDeleting", function(e) {
+ var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
+                               // so we'll get the first since we know we only have one selection
+ if (part instanceof go.Link) {
+   var childId = part.toNode.data.key;
+   var parentId = part.fromNode.data.key;
+   window.trelloHandler.deleteTrelloDependency(parentId, childId);
+ }
+});
 
 window.myDiagram.model = myModel;
