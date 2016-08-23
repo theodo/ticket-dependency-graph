@@ -17,9 +17,7 @@ window.myDiagram.nodeTemplate = GO(
             var diagram = node.diagram;
             var selnode = diagram.selection.first();  // assume just one Node in selection
             if (selnode instanceof go.Node) {
-                var selKey = selnode.key;
-                var nodeKey = node.key;
-                diagram.toolManager.linkingTool.insertLink(node, node.port, selnode, selnode.port);
+                window.graphHandler.addDependency(node.data.key, selnode.data.key);
             }
         }
     },
@@ -58,5 +56,16 @@ myModel.linkDataArray =
 window.myDiagram.linkTemplate =
   GO(go.Link,
     GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
+
+
+myDiagram.addDiagramListener("SelectionDeleting", function(e) {
+ var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
+                               // so we'll get the first since we know we only have one selection
+ if (part instanceof go.Link) {
+   var childId = part.toNode.data.key;
+   var parentId = part.fromNode.data.key;
+   window.trelloHandler.deleteTrelloDependency(parentId, childId);
+ }
+});
 
 window.myDiagram.model = myModel;
