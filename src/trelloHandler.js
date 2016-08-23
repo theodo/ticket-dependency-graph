@@ -11,7 +11,8 @@ window.trelloHandler = new Vue({
         selectedBoard: null,
         lists: null,
         selectedList: null,
-        cards: null
+        cards: null,
+        loading: false
     },
 
     watch: {
@@ -51,18 +52,24 @@ window.trelloHandler = new Vue({
         authSuccessHandler: function() {
             var vm = this;
             console.log("Successful authentication")
-            this.authenticated = true;
+            this.loading = true;
             Trello.get('/member/me/boards').then(function(data) {
                 vm.boards = data;
+                vm.loading = false;
             })
         },
 
         refresh: function() {
             var vm = this;
+            this.loading = true;
             Trello.get('/lists/' + this.selectedList +'/cards').then(function(data) {
                 vm.cards = data;
                 vm.deleteUselessCards();
                 vm.addOrUpdateCards();
+                vm.calculateDependenciesAsPromises().then(function(linkDataArray) {
+                    window.myDiagram.model.linkDataArray = linkDataArray;
+                    vm.loading = false;
+                });
             })
         },
 
@@ -85,6 +92,45 @@ window.trelloHandler = new Vue({
             for (var i = 0; i < toBeRemoved.length; i++) {
                 window.graphHandler.removeTicket(toBeRemoved[i])
             }
+        },
+
+        calculateDependenciesAsPromises: function() {
+            var vm = this;
+            var linkDataArray = [];
+            var promises = [];
+            for (var iCard = 0; iCard < vm.cards.length; iCard++) {
+                promises.push(
+                    new Promise(function(resolve, reject) {
+                        vm.getOrCreateDependencyChecklist(vm.cards[iCard]).then(function(checklist) {
+                            var ticketIds = vm.getDependentTicketsFromChecklist(checklist);
+                            for (var j = 0; j < ticketIds.length; j++) {
+                                linkDataArray.push({
+                                    from: ticketIds[j].ticketId,
+                                    to: vm.getTicketIdFromIdCard(checklist.idCard)
+                                });
+                            }
+                            resolve();
+                        });
+                    })
+                );
+            }
+            return new Promise(function(resolve, reject) {
+                Promise.all(promises).then(function() {
+                    resolve(linkDataArray);
+                });
+            });
+        },
+
+        getTicketIdFromIdCard: function(idCard) {
+            if (null == this.cards) {
+                return null;
+            }
+            for (var i = 0; i < this.cards.length; i++) {
+                if (this.cards[i].id == idCard) {
+                    return this.cards[i].idShort;
+                }
+            }
+            return null;
         },
 
         isTicketIdInList: function(ticketId) {
@@ -146,7 +192,7 @@ window.trelloHandler = new Vue({
             this.getOrCreateDependencyChecklist(childCard).then(function(checklist) {
                 ticketIds = vm.getDependentTicketsFromChecklist(checklist);
                 for (var i = 0; i < ticketIds.length; i++) {
-                    if (parseInt(ticketIds[i].ticketId) == parseInt(parentId)) {
+                    if (ticketIds[i].ticketId == parentId) {
                         Trello.delete('/checklists/' + checklist.id + '/checkItems/' + ticketIds[i].checkItemId);
                         console.log('Dependency deleted');
                         return;
@@ -175,15 +221,15 @@ window.trelloHandler = new Vue({
             if ("#" == checkItemName[0]) {
                 return checkItemName.split("#")[1];
             }
-            return checkItemName.split("/")[5].split("-")[0];
+            return parseInt(checkItemName.split("/")[5].split("-")[0]);
         },
 
         getOrCreateDependencyChecklist: function(card) {
             return new Promise(function(resolve, reject) {
                 Trello.get('/cards/' + card.id + '/checklists').then(function(checklists) {
-                    for (var i = 0; i < checklists.length; i++) {
-                        if ("Dependencies" == checklists[i].name) {
-                            return resolve(checklists[i]);
+                    for (var k = 0; k < checklists.length; k++) {
+                        if ("Dependencies" == checklists[k].name) {
+                            return resolve(checklists[k]);
                         }
                     }
                     var checklist = {
