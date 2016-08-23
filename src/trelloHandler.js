@@ -12,16 +12,20 @@ window.trelloHandler = new Vue({
         lists: null,
         selectedList: null,
         cards: null,
-        loading: false
+        loading: false,
+        trelloUrl: null,
     },
 
     watch: {
         selectedBoard: function(val, oldVal) {
             var vm = this;
             if (0 < val.length) {
-                Trello.get('/boards/' + val +'/lists').then(function(data) {
+                Trello.get('/boards/' + val + '/lists').then(function(data) {
                     vm.lists = data;
-                })
+                });
+                Trello.get('/boards/' + val + '/shortUrl').then(function(data) {
+                    vm.trelloUrl = data._value;
+                });
             }
         },
         selectedList: function(val, oldVal) {
@@ -140,10 +144,6 @@ window.trelloHandler = new Vue({
                 }
             }
             return false;
-        },
-
-        saveData: function() {
-            window.graphHandler.saveData()
         },
 
         addTrelloDependency: function(parentId, childId) {

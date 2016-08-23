@@ -19,7 +19,7 @@
                     <div class="input-field col s4">
                     </div>
                     <div class="input-field col s4">
-                        <button class="btn right" type="button" v-on:click="saveData">Export to JSON</button>
+                        <a href="{{ trelloUrl }}"class="btn right" type="button" v-if="trelloUrl!=null">Open Board</a>
                     </div>
                 </div>
                 <div class="row">
@@ -51,6 +51,7 @@
                         </div>
                     </div>
                     <button class="right btn waves-effect waves-light center-align" type="submit">Add dependency</button>
+                    <button class="btn left" type="button" v-on:click="saveData">Export to JSON</button>
                 </form>
                 <div class="col s12">
                     <div class="row">
