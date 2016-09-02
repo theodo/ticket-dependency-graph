@@ -20,7 +20,7 @@ window.myDiagram.nodeTemplate = GO(
             }
         }
     },
-    GO(go.Shape, "RoundedRectangle", { strokeWidth: 0, fill: "white"}),
+    GO(go.Shape, "RoundedRectangle", { strokeWidth: 1, fill: "white"}),
     GO(go.Panel, "Horizontal",
         GO(go.TextBlock, { margin: 12, font: "bold 20px sans-serif" },
         new go.Binding("text", "key")),
