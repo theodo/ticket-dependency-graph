@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Ticket Dependency Graph</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+        <link rel="stylesheet" href="./style.css">
     </head>
     <body>
         <div class="container">
@@ -37,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div id="dependencyGraph" style="height:600px; border: 1px solid black;"></div>
+            <div id="dependencyGraph"></div>
             <div class="row" id="graphHandler">
                 <form v-on:submit.prevent="addDependency(currentParent, currentChild)">
                     <div class="row">
