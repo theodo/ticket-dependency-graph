@@ -3,10 +3,9 @@ var GO = go.GraphObject.make;
 window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
     allowCopy: false,
-    layout: GO(go.LayeredDigraphLayout,
-        { angle: 90, layerSpacing: 10 })
+    layout: GO(go.GridLayout),
+    autoScale: go.Diagram.Uniform
 });
-
 window.myDiagram.nodeTemplate = GO(
     go.Node,
     "Auto",
