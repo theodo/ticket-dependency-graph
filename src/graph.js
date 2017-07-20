@@ -53,8 +53,9 @@ myModel.linkDataArray =
 
 window.myDiagram.linkTemplate =
   GO(go.Link,
-    GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
-
+    GO(go.Shape, { strokeWidth: 3, stroke: "#555" }),
+    GO(go.Shape, { toArrow: "Standard", stroke: "#555", strokeWidth: 2 })
+  );
 
 myDiagram.addDiagramListener("SelectionDeleting", function(e) {
  var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
