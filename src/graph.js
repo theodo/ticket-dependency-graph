@@ -25,7 +25,7 @@ window.myDiagram.nodeTemplate = GO(
         new go.Binding("text", "key")),
         GO(go.TextBlock, { row: 0, column: 1, margin: 2, stroke: "#64AD35", font: "bold 14px sans-serif" },
         new go.Binding("text", "complexity")),
-        GO(go.TextBlock, { row: 1, column: 0, columnSpan: 2, margin: 2, font: "bold 10px sans-serif",  width: 100, wrap: go.TextBlock.WrapFit },
+        GO(go.TextBlock, { row: 1, column: 0, columnSpan: 2, margin: 2, font: "bold 10px sans-serif", width: 200, wrap: go.TextBlock.WrapFit },
         new go.Binding("text", "name"))
     )
 );
