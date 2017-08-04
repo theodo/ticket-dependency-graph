@@ -1,5 +1,6 @@
 require('./graph.js')
 var Vue = require('vue');
+
 var getComplexityFromName = function(name) {
     if (name[0] != '(') {
         return null;
@@ -27,20 +28,75 @@ window.graphHandler = new Vue({
 
     methods: {
         addDependency: function(parent, child) {
-            this.addGraphDependency(parent, child);
+            var link = {from: parent, to: child}
+            window.myDiagram.model.addLinkData(link);
+            currentNode = window.myDiagram.findNodeForKey(child);
+            rootNode = currentNode.findTreeRoot();
+            rootKey = rootNode.data.key;
+            if (0 != rootNode.findLinksInto().count) {
+                //Prevents creating some loops
+                //App still crashes if loop already exists.
+                console.log("Aborting. This creates a loop");
+                window.myDiagram.model.removeLinkData(link);
+                return;
+            }
+            this.resetChildrenBranchComplexity(child);
+            this.computeBranchComplexity(child);
             window.trelloHandler.addTrelloDependency(parent, child);
         },
 
-        addGraphDependency: function(parent, child) {
-            window.myDiagram.startTransaction("Add dependency");
-            window.myDiagram.model.addLinkData({
-                from: parseInt(parent),
-                to: parseInt(child)
-            })
-            window.myDiagram.commitTransaction("Add dependency");
+        resetChildrenBranchComplexity: function(nodeCur) {
+            if (this.getBranchComplexity(nodeCur) == -1) {
+                return;
+            }
+            this.setBranchComplexity(nodeCur, -1); //Prevents loops
+            currentNode = window.myDiagram.findNodeForKey(nodeCur);
+            var it = currentNode.findLinksOutOf();
+            while (it.next()) {
+                //it.value stores the link towards the child
+                var childKey = it.value.data.to;
+                this.resetChildrenBranchComplexity(childKey);
+            }
+            this.setBranchComplexity(nodeCur, null);
+        },
 
-            this.currentChild = '';
-            this.currentParent = '';
+        computeBranchComplexity: function(nodeCur) {
+            if (null != this.getBranchComplexity(nodeCur)) {
+                return this.getBranchComplexity(nodeCur);
+            }
+            var curComplexity = this.getComplexity(nodeCur)
+            this.setBranchComplexity(nodeCur, -1); //Prevents loops
+            currentNode = window.myDiagram.findNodeForKey(nodeCur);
+            var it = currentNode.findLinksInto();
+            var maxParentComplexity = 0;
+            while (it.next()) {
+                //it.value stores the link
+                var parentKey = it.value.data.from;
+                var parentBranchComplexity = this.computeBranchComplexity(parentKey);
+                if (maxParentComplexity < parentBranchComplexity) {
+                    maxParentComplexity = parentBranchComplexity;
+                }
+            }
+            var branchComplexity = maxParentComplexity + curComplexity;
+            this.setBranchComplexity(nodeCur, branchComplexity);
+            return branchComplexity;
+        },
+
+        getComplexity: function(nodeId) {
+            var complexity = window.myDiagram.model.findNodeDataForKey(nodeId).complexity;
+            if (null == complexity) {
+                return 0;
+            }
+            return parseFloat(complexity);
+        },
+
+        setBranchComplexity: function(nodeId, branchComplexity) {
+            var node = window.myDiagram.model.findNodeDataForKey(nodeId)
+            window.myDiagram.model.setDataProperty(node, "branchComplexity", branchComplexity);
+        },
+
+        getBranchComplexity: function(nodeId) {
+            return window.myDiagram.model.findNodeDataForKey(nodeId).branchComplexity;
         },
 
         addOrUpdateTicket: function(ticketId, ticketName) {

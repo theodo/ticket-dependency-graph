@@ -26,6 +26,8 @@ window.myDiagram.nodeTemplate = GO(
         new go.Binding("text", "key")),
         GO(go.TextBlock, { margin: 12, stroke: "#64AD35", font: "bold 14px sans-serif" },
         new go.Binding("text", "complexity")),
+        GO(go.TextBlock, { margin: 12, stroke: "#666666", font: "bold 14px sans-serif" },
+        new go.Binding("text", "branchComplexity")),
         GO(go.TextBlock, { margin: 8, font: "bold 10px sans-serif",  width: 100, wrap: go.TextBlock.WrapFit },
         new go.Binding("text", "name"))
     )
@@ -34,13 +36,13 @@ window.myDiagram.nodeTemplate = GO(
 //To be populated with Trello
 var myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
-    { key: 1 , complexity: 13, name: "Connect to Trello to use the TDG"},
-    { key: 2 , complexity: 5, name: "Choose a board, a list, and you're good to go!"},
-    { key: 3 , complexity: 8, name: "You can add a link between two tickets given their id using the form below"},
-    { key: 4 , complexity: 1, name: "Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on"},
-    { key: 5 , complexity: 0.5, name: "To delete a link, select it with your mouse and press the Delete key"},
-    { key: 6 , complexity: null, name: "Dependencies will be stored on your Trello board!"},
-    { key: 7 , complexity: null, name: "Enjoy!"},
+    { key: 1 , complexity: 13, branchComplexity: null, name: "Connect to Trello to use the TDG"},
+    { key: 2 , complexity: 5, branchComplexity: null, name: "Choose a board, a list, and you're good to go!"},
+    { key: 3 , complexity: 8, branchComplexity: null, name: "You can add a link between two tickets given their id using the form below"},
+    { key: 4 , complexity: 1, branchComplexity: null, name: "Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on"},
+    { key: 5 , complexity: 0.5, branchComplexity: null, name: "To delete a link, select it with your mouse and press the Delete key"},
+    { key: 6 , complexity: null, branchComplexity: null, name: "Dependencies will be stored on your Trello board!"},
+    { key: 7 , complexity: null, branchComplexity: null, name: "Enjoy!"},
 ];
 
 myModel.linkDataArray =
@@ -63,8 +65,16 @@ myDiagram.addDiagramListener("SelectionDeleting", function(e) {
  if (part instanceof go.Link) {
    var childId = part.toNode.data.key;
    var parentId = part.fromNode.data.key;
+   window.graphHandler.resetChildrenBranchComplexity(childId);
    window.trelloHandler.deleteTrelloDependency(parentId, childId);
  }
+});
+
+myDiagram.addDiagramListener("ObjectContextClicked", function(e) {
+    var part = e.subject.part;
+    if (part instanceof go.Node) {
+        window.graphHandler.computeBranchComplexity(part.data.key);
+    }
 });
 
 window.myDiagram.model = myModel;
