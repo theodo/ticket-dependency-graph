@@ -6,8 +6,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     </head>
     <body>
-        <div class="container">
-            <div id="trello">
+        <div class="container" style="width: 100vw;">
+            <div id="trello" style="width: 70vw; margin: auto;">
                 <div v-if="loading" class="progress">
                     <div class="indeterminate"></div>
                 </div>
@@ -37,8 +37,8 @@
                     </div>
                 </div>
             </div>
-            <div id="dependencyGraph" style="height:600px; background-color: #E0E2E4;"></div>
-            <div class="row" id="graphHandler">
+            <div id="dependencyGraph" style="height:90vh; width: 90vw; background-color: #E0E2E4;"></div>
+            <div class="row" id="graphHandler" style="width: 70vw; margin: auto;">
                 <form v-on:submit.prevent="addDependency(currentParent, currentChild)">
                     <div class="row">
                         <div class="input-field col m6 s12">

@@ -3,10 +3,9 @@ var GO = go.GraphObject.make;
 window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
     allowCopy: false,
-    layout: GO(go.LayeredDigraphLayout,
-        { angle: 90, layerSpacing: 10 })
+    layout: GO(go.GridLayout),
+    autoScale: go.Diagram.Uniform
 });
-
 window.myDiagram.nodeTemplate = GO(
     go.Node,
     "Auto",
@@ -21,12 +20,12 @@ window.myDiagram.nodeTemplate = GO(
         }
     },
     GO(go.Shape, "RoundedRectangle", { strokeWidth: 0, fill: "white"}),
-    GO(go.Panel, "Horizontal",
-        GO(go.TextBlock, { margin: 12, font: "bold 20px sans-serif" },
+    GO(go.Panel, "Table",
+        GO(go.TextBlock, { row: 0, column: 0, margin: 2, font: "bold 20px sans-serif" },
         new go.Binding("text", "key")),
-        GO(go.TextBlock, { margin: 12, stroke: "#64AD35", font: "bold 14px sans-serif" },
+        GO(go.TextBlock, { row: 0, column: 1, margin: 2, stroke: "#64AD35", font: "bold 14px sans-serif" },
         new go.Binding("text", "complexity")),
-        GO(go.TextBlock, { margin: 8, font: "bold 10px sans-serif",  width: 100, wrap: go.TextBlock.WrapFit },
+        GO(go.TextBlock, { row: 1, column: 0, columnSpan: 2, margin: 2, font: "bold 10px sans-serif", width: 200, wrap: go.TextBlock.WrapFit },
         new go.Binding("text", "name"))
     )
 );
@@ -54,8 +53,9 @@ myModel.linkDataArray =
 
 window.myDiagram.linkTemplate =
   GO(go.Link,
-    GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
-
+    GO(go.Shape, { strokeWidth: 3, stroke: "#555" }),
+    GO(go.Shape, { toArrow: "Standard", stroke: "#555", strokeWidth: 2 })
+  );
 
 myDiagram.addDiagramListener("SelectionDeleting", function(e) {
  var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
