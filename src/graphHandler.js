@@ -1,17 +1,17 @@
 require('./graph.js')
 var Vue = require('vue');
 var getComplexityFromName = function(name) {
-    if (name[0] != '(') {
-        return null;
-    }
-    return res = name.split(")")[0].split("(")[1];
+    var matches = name.match(/^\((\d+[\.,]?\d*)\).+$/);
+    if (!matches) return null;
+    return matches[1];
 }
 
 var getNameWithoutComplexity = function(name) {
-    if (name[0] != '(') {
-        return name;
+    var matchedComplexity = getComplexityFromName(name);
+    if (matchedComplexity) {
+      return name.replace('(' + matchedComplexity + ')', '');
     }
-    return name.split(")")[1];
+    return name;
 }
 
 window.graphHandler = new Vue({
