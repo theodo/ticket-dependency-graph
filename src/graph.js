@@ -1,5 +1,6 @@
 var go = require('gojs');
 var GO = go.GraphObject.make;
+
 window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
     "undoManager.isEnabled": true,
@@ -18,7 +19,7 @@ window.myDiagram.nodeTemplate = GO(
             var selnode = diagram.selection.first();  // assume just one Node in selection
             if (selnode instanceof go.Node) {
                 window.graphHandler.addDependency(node.data.key, selnode.data.key);
-                selnode.data.isJustLinked = true;
+                selnode.data.hasJustBeenLinked = true;
                 node.isLayoutPositioned = true;
             }
         }
@@ -59,7 +60,6 @@ window.myDiagram.linkTemplate =
   GO(go.Link,
     GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
 
-
 myDiagram.addDiagramListener("SelectionDeleting", function(e) {
   var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
                                // so we'll get the first since we know we only have one selection
@@ -71,13 +71,14 @@ myDiagram.addDiagramListener("SelectionDeleting", function(e) {
 });
 
 myDiagram.addDiagramListener("SelectionMoved", function(e) {
-  e.subject.each(function(part){
-    if (part.data.isJustLinked === true) {
-      part.data.isJustLinked = false;
+  e.subject.each(function(part) {
+    if (part.data.hasJustBeenLinked) {
+      part.data.hasJustBeenLinked = false;
       part.isLayoutPositioned = true;
     }
     else part.isLayoutPositioned = false;
   });
 });
+
 
 window.myDiagram.model = myModel;
