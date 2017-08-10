@@ -1,26 +1,30 @@
 var go = require('gojs');
 var GO = go.GraphObject.make;
+
 window.myDiagram = GO(go.Diagram, "dependencyGraph", {
     initialContentAlignment: go.Spot.Center,
+    "undoManager.isEnabled": true,
     allowCopy: false,
-    layout: GO(go.LayeredDigraphLayout,
-        { angle: 90, layerSpacing: 10 })
+    autoScale: go.Diagram.Uniform,
+    layout: GO(go.LayeredDigraphLayout, { angle: 90, layerSpacing: 10 })
 });
 
 window.myDiagram.nodeTemplate = GO(
     go.Node,
     "Auto",
-    { isShadowed: true, shadowColor: "#C5C1AA" },
+    { isShadowed: true, shadowColor: "#C5C1AA", layoutConditions: go.Part.LayoutAdded },
     {
         mouseDrop: function (e, node) {
             var diagram = node.diagram;
             var selnode = diagram.selection.first();  // assume just one Node in selection
             if (selnode instanceof go.Node) {
                 window.graphHandler.addDependency(node.data.key, selnode.data.key);
+                selnode.data.hasJustBeenLinked = true;
+                node.isLayoutPositioned = true;
             }
         }
     },
-    GO(go.Shape, "RoundedRectangle", { strokeWidth: 0, fill: "white"}),
+    GO(go.Shape, "RoundedRectangle", { strokeWidth: 1, fill: "white"}),
     GO(go.Panel, "Horizontal",
         GO(go.TextBlock, { margin: 12, font: "bold 20px sans-serif" },
         new go.Binding("text", "key")),
@@ -56,15 +60,25 @@ window.myDiagram.linkTemplate =
   GO(go.Link,
     GO(go.Shape, { strokeWidth: 5, stroke: "#555" }));
 
-
 myDiagram.addDiagramListener("SelectionDeleting", function(e) {
- var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
+  var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
                                // so we'll get the first since we know we only have one selection
- if (part instanceof go.Link) {
-   var childId = part.toNode.data.key;
-   var parentId = part.fromNode.data.key;
-   window.trelloHandler.deleteTrelloDependency(parentId, childId);
- }
+  if (part instanceof go.Link) {
+    var childId = part.toNode.data.key;
+    var parentId = part.fromNode.data.key;
+    window.trelloHandler.deleteTrelloDependency(parentId, childId);
+  }
 });
+
+myDiagram.addDiagramListener("SelectionMoved", function(e) {
+  e.subject.each(function(part) {
+    if (part.data.hasJustBeenLinked) {
+      part.data.hasJustBeenLinked = false;
+      part.isLayoutPositioned = true;
+    }
+    else part.isLayoutPositioned = false;
+  });
+});
+
 
 window.myDiagram.model = myModel;

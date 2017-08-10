@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Ticket Dependency Graph</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+        <link rel="stylesheet" href="./style.css">
     </head>
     <body>
         <div class="container">
@@ -37,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div id="dependencyGraph" style="height:600px; background-color: #E0E2E4;"></div>
+            <div id="dependencyGraph"></div>
             <div class="row" id="graphHandler">
                 <form v-on:submit.prevent="addDependency(currentParent, currentChild)">
                     <div class="row">
@@ -67,5 +68,10 @@
         <script src="dist/app.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+        <script>
+          window.onbeforeunload = function() {
+            return 'Are you sure you want to leave this page?';
+          }
+        </script>
     </body>
 </html>
