@@ -13,24 +13,24 @@
                     <div class="indeterminate"></div>
                 </div>
                 <div>
-                    <div class="input-field col s4">
+                    <div class="col s4">
                         <button type="button" class="btn" v-on:click="authorize" v-if="boards==null">Connect to Trello</button>
                         <button type="button" class="btn center-align" v-if="cards!=null" v-on:click="refresh">Refresh</button>
                     </div>
-                    <div class="input-field col s4">
+                    <div class="col s4">
                     </div>
-                    <div class="input-field col s4">
+                    <div class="col s4">
                         <a href="{{ trelloUrl }}"class="btn right" type="button" v-if="trelloUrl!=null">Open Board</a>
                     </div>
                 </div>
                 <div>
-                    <div class="input-field col m6 s12">
+                    <div class="col m6 s12">
                         <select v-model="selectedBoard" v-if="boards!=null" class="browser-default">
                             <option value="" disabled selected style="display: none;">Choose a board</option>
                             <option v-for="board in boards" v-bind:value="board.id">{{ board.name }}</option>
                         </select>
                     </div>
-                    <div class="input-field col m6 s12">
+                    <div class="col m6 s12">
                         <select v-model="selectedList" v-if="lists!=null" class="browser-default">
                             <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
                             <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
@@ -42,11 +42,11 @@
             <div id="graphHandler">
                 <form v-on:submit.prevent="addDependency(currentParent, currentChild)">
                     <div>
-                        <div class="input-field col m6 s12">
+                        <div class="col m6 s12">
                             <label for="child">The ticket id</label>
                             <input id="child" type="text" v-model="currentChild"/>
                         </div>
-                        <div class="input-field col m6 s12">
+                        <div class="col m6 s12">
                             <label for="parent">depends on the ticket</label>
                             <input id="parent" type="text" v-model="currentParent"/>
                         </div>
@@ -56,7 +56,7 @@
                 </form>
                 <div class="col s12">
                     <div>
-                        <div class="input-field col s12">
+                        <div class="col s12">
                             <textarea id="dataAsJson" v-model="dataAsJson" v-if="dataAsJson!=''" style="width:100%;height:250px">
                             </textarea>
                         </div>
