@@ -7,34 +7,30 @@
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
-        <div class="container">
+        <div>
             <div id="trello">
                 <div v-if="loading" class="progress">
                     <div class="indeterminate"></div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s4">
+                    <div class="col s2">
                         <button type="button" class="btn" v-on:click="authorize" v-if="boards==null">Connect to Trello</button>
                         <button type="button" class="btn center-align" v-if="cards!=null" v-on:click="refresh">Refresh</button>
                     </div>
-                    <div class="input-field col s4">
-                    </div>
-                    <div class="input-field col s4">
-                        <a href="{{ trelloUrl }}"class="btn right" type="button" v-if="trelloUrl!=null">Open Board</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col m6 s12">
+                    <div class="col s4">
                         <select v-model="selectedBoard" v-if="boards!=null" class="browser-default">
                             <option value="" disabled selected style="display: none;">Choose a board</option>
                             <option v-for="board in boards" v-bind:value="board.id">{{ board.name }}</option>
                         </select>
                     </div>
-                    <div class="input-field col m6 s12">
+                    <div class="col s4">
                         <select v-model="selectedList" v-if="lists!=null" class="browser-default">
                             <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
                             <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
                         </select>
+                    </div>
+                    <div class="col s2">
+                        <a href="{{ trelloUrl }}" target="_blank" class="btn right" type="button" v-if="trelloUrl!=null">Open Board</a>
                     </div>
                 </div>
             </div>
@@ -42,11 +38,11 @@
             <div class="row" id="graphHandler">
                 <form v-on:submit.prevent="addDependency(currentParent, currentChild)">
                     <div class="row">
-                        <div class="input-field col m6 s12">
+                        <div class="input-field col s6">
                             <label for="child">The ticket id</label>
                             <input id="child" type="text" v-model="currentChild"/>
                         </div>
-                        <div class="input-field col m6 s12">
+                        <div class="input-field col s6">
                             <label for="parent">depends on the ticket</label>
                             <input id="parent" type="text" v-model="currentParent"/>
                         </div>
@@ -54,14 +50,14 @@
                     <button class="right btn waves-effect waves-light center-align" type="submit">Add dependency</button>
                     <button class="btn left" type="button" v-on:click="saveData">Export to JSON</button>
                 </form>
-                <div class="col s12">
+                <div class="col s12" v-if="dataAsJson!=''">
                     <div class="row">
-                        <div class="input-field col s12">
-                            <textarea id="dataAsJson" v-model="dataAsJson" v-if="dataAsJson!=''" style="width:100%;height:250px">
+                        <div class="col s12">
+                            <textarea id="dataAsJson" v-model="dataAsJson"  style="width:100%;height:250px">
                             </textarea>
                         </div>
                     </div>
-                    <button class="right btn waves-effect waves-light center-align" v-if="dataAsJson!=''" v-on:click="loadData">Load Json</button>
+                    <button class="right btn waves-effect waves-light center-align" v-on:click="loadData">Load Json</button>
                 </div>
             </div>
         </div>

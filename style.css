@@ -1,8 +1,8 @@
 #dependencyGraph {
-  height:600px;
+  height: calc(100vh - 180px);
   border: 1px solid black;
 }
 
-.container{
-  width: 100%;
+.row {
+  margin-bottom: 5px;
 }
