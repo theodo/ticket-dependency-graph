@@ -11,7 +11,7 @@ cd ticket-dependency-graph
 npm install
 npm start
 ```
-Server should be running on `http://localhost:8080/webpack-dev-server/`
+The app should be running on `http://localhost:8080/`
 
 ## Usage
 * Authorize the application to bind with your Trello account

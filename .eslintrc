@@ -1,0 +1,8 @@
+{
+  "extends": "airbnb-base",
+  "globals": {
+    "window": true,
+    "Trello": true,
+    "go": true
+  }
+}

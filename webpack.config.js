@@ -1,12 +1,25 @@
+const path = require('path');
+
 module.exports = {
-    entry: "./src/main.js",
+    entry: './src/main.js',
+    mode: 'development',
     output: {
-        path: __dirname,
-        filename: "./dist/app.js"
+        path: path.resolve(__dirname, "dist"),
+        filename: 'app.js'
     },
     module: {
-        loaders: [
+        rules: [
             { test: /\.css$/, loader: "style!css" }
         ]
-    }
+    },
+    devServer: {
+        contentBase: './',
+        publicPath: '/dist/'
+    },
+    resolve: {
+        alias: {
+            vue: 'vue/dist/vue.js'
+        },
+        extensions: [".ts", ".tsx", ".js", ".json"]
+    },
 };

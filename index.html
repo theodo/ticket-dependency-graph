@@ -24,13 +24,11 @@
                         </select>
                     </div>
                     <div class="col s4">
-                        <select v-model="selectedList" v-if="lists!=null" class="browser-default">
-                            <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
-                            <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
-                        </select>
+                        <v-select :options="lists" label="name" v-model="selectedLists" v-if="lists!=null" class="browser-default" multiple>
+                        </v-select>
                     </div>
                     <div class="col s2">
-                        <a href="{{ trelloUrl }}" target="_blank" class="btn right" type="button" v-if="trelloUrl!=null">Open Board</a>
+                        <a :href="trelloUrl" target="_blank" class="btn right" type="button" v-if="trelloUrl!=null">Open Board</a>
                     </div>
                 </div>
             </div>
