@@ -1,6 +1,9 @@
 var Vue = require('vue');
 require('./trelloApiHelper.js');
-require('./graphHandler.js')
+require('./graphHandler.js');
+
+const lastBoardChoice = 'lastBoardChoice';
+const lastListChoice = 'lastListChoice';
 
 window.trelloHandler = new Vue({
     el: "#trello",
@@ -16,27 +19,21 @@ window.trelloHandler = new Vue({
         trelloUrl: null,
     },
 
-    watch: {
-        selectedBoard: function(val, oldVal) {
-            var vm = this;
-            if (0 < val.length) {
-                Trello.get('/boards/' + val + '/lists').then(function(data) {
-                    vm.lists = data;
-                });
-                Trello.get('/boards/' + val + '/shortUrl').then(function(data) {
-                    vm.trelloUrl = data._value;
-                });
-            }
-        },
-        selectedList: function(val, oldVal) {
-            var vm = this;
-            if (0 < val.length) {
-                vm.refresh()
-            }
-        }
-    },
-
     methods: {
+        onBoardChange: function(event) {
+            const boardId = event.target.value;
+
+            this.selectBoard(boardId)
+            .then(() => { localStorage.setItem(lastBoardChoice, boardId) });
+        },
+
+        onListChange: function(event) {
+            const listId = event.target.value;
+
+            this.selectList(listId)
+            .then(() => { localStorage.setItem(lastListChoice, listId) });
+        },
+
         authorize: function() {
             Trello.deauthorize(); //Fix this
             Trello.authorize({
@@ -60,13 +57,17 @@ window.trelloHandler = new Vue({
             Trello.get('/member/me/boards').then(function(data) {
                 vm.boards = data;
                 vm.loading = false;
+
+                // Thanks to Vue.nextTick, we wait for Vue to update the DOM, for the board dropdown to be filled with
+                // the list of boards before retrieveLastBoardAndListChoice sets a chosen value in the board dropdown.
+                Vue.nextTick(vm.retrieveLastBoardAndListChoice);
             })
         },
 
         refresh: function() {
             var vm = this;
             this.loading = true;
-            Trello.get('/lists/' + this.selectedList +'/cards').then(function(data) {
+            return Trello.get('/lists/' + this.selectedList +'/cards').then(function(data) {
                 vm.cards = data;
                 vm.deleteUselessCards();
                 vm.addOrUpdateCards();
@@ -74,7 +75,36 @@ window.trelloHandler = new Vue({
                     window.myDiagram.model.linkDataArray = linkDataArray;
                     vm.loading = false;
                 });
-            })
+            });
+        },
+
+        retrieveLastBoardAndListChoice: function() {
+            const boardChoiceId = localStorage.getItem(lastBoardChoice);
+            const listChoiceId = localStorage.getItem(lastListChoice);
+
+            if (!boardChoiceId || !listChoiceId) {
+                return Promise.resolve();
+            } else {
+                return this.selectBoard(boardChoiceId)
+                .then(() => this.selectList(listChoiceId));
+            }
+        },
+
+        selectBoard: function(boardId) {
+            this.selectedBoard = boardId;
+
+            return Promise.all([
+                Trello.get('/boards/' + boardId + '/lists'),
+                Trello.get('/boards/' + boardId + '/shortUrl')
+            ]).then(([lists, trelloUrl]) => {
+                this.lists = lists;
+                this.trelloUrl = trelloUrl._value;
+            });
+        },
+
+        selectList: function(listId) {
+            this.selectedList = listId;
+            return this.refresh();
         },
 
         addOrUpdateCards: function() {

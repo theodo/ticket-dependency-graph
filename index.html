@@ -18,13 +18,13 @@
                         <button type="button" class="btn center-align" v-if="cards!=null" v-on:click="refresh">Refresh</button>
                     </div>
                     <div class="col s4">
-                        <select v-model="selectedBoard" v-if="boards!=null" class="browser-default">
+                        <select v-model="selectedBoard" v-if="boards!=null" v-on:change="onBoardChange" class="browser-default">
                             <option value="" disabled selected style="display: none;">Choose a board</option>
                             <option v-for="board in boards" v-bind:value="board.id">{{ board.name }}</option>
                         </select>
                     </div>
                     <div class="col s4">
-                        <select v-model="selectedList" v-if="lists!=null" class="browser-default">
+                        <select v-model="selectedList" v-if="lists!=null" v-on:change="onListChange" class="browser-default">
                             <option value="" disabled selected style="display: none;">Choose the sprint backlog column</option>
                             <option v-for="list in lists" v-bind:value="list.id">{{ list.name }}</option>
                         </select>
