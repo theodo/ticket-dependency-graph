@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Varal7/ticket-dependency-graph#readme",
   "devDependencies": {
+    "prettier": "^1.17.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.14.1"
   },
