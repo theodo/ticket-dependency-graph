@@ -10,14 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Varal7/ticket-dependency-graph.git"
+    "url": "git+https://github.com/theodo/ticket-dependency-graph.git"
   },
   "author": "varal7",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Varal7/ticket-dependency-graph/issues"
-  },
-  "homepage": "https://github.com/Varal7/ticket-dependency-graph#readme",
+  "homepage": "https://github.com/theodo/ticket-dependency-graph#readme",
   "devDependencies": {
     "prettier": "^1.17.1",
     "webpack": "^1.13.2",
