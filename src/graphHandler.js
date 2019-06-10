@@ -1,15 +1,16 @@
+const Vue = require('vue');
 require('./graph.js');
-var Vue = require('vue');
-var getComplexityFromName = function(name) {
-  var matches = name.match(/^\((\d+[\.,]?\d*)\).+$/);
+
+const getComplexityFromName = name => {
+  const matches = name.match(/^\((\d+[.,]?\d*)\).+$/);
   if (!matches) return null;
   return matches[1];
 };
 
-var getNameWithoutComplexity = function(name) {
-  var matchedComplexity = getComplexityFromName(name);
+const getNameWithoutComplexity = name => {
+  const matchedComplexity = getComplexityFromName(name);
   if (matchedComplexity) {
-    return name.replace('(' + matchedComplexity + ')', '');
+    return name.replace(`(${matchedComplexity})`, '');
   }
   return name;
 };
@@ -26,16 +27,16 @@ window.graphHandler = new Vue({
   },
 
   methods: {
-    addDependency: function(parent, child) {
+    addDependency(parent, child) {
       this.addGraphDependency(parent, child);
       window.trelloHandler.addTrelloDependency(parent, child);
     },
 
-    addGraphDependency: function(parent, child) {
+    addGraphDependency(parent, child) {
       window.myDiagram.startTransaction('Add dependency');
       window.myDiagram.model.addLinkData({
-        from: parseInt(parent),
-        to: parseInt(child),
+        from: parseInt(parent, 10),
+        to: parseInt(child, 10),
       });
       window.myDiagram.commitTransaction('Add dependency');
 
@@ -43,11 +44,11 @@ window.graphHandler = new Vue({
       this.currentParent = '';
     },
 
-    addOrUpdateTicket: function(ticketId, ticketName) {
-      currentNode = window.myDiagram.model.findNodeDataForKey(ticketId);
-      if (null == currentNode) {
+    addOrUpdateTicket(ticketId, ticketName) {
+      const currentNode = window.myDiagram.model.findNodeDataForKey(ticketId);
+      if (currentNode == null) {
         window.myDiagram.startTransaction('Add ticket');
-        var newTicket = {
+        const newTicket = {
           key: ticketId,
           name: getNameWithoutComplexity(ticketName),
           complexity: getComplexityFromName(ticketName),
@@ -70,25 +71,25 @@ window.graphHandler = new Vue({
       }
     },
 
-    removeTicket: function(ticketId) {
-      currentNode = window.myDiagram.findNodeForKey(ticketId);
-      if (null != currentNode) {
+    removeTicket(ticketId) {
+      const currentNode = window.myDiagram.findNodeForKey(ticketId);
+      if (currentNode != null) {
         window.myDiagram.startTransaction('Remove ticket');
         window.myDiagram.remove(currentNode);
         window.myDiagram.commitTransaction('Remove ticket');
       }
     },
 
-    getNodes: function() {
+    getNodes() {
       return window.myDiagram.model.nodeDataArray;
     },
 
-    saveData: function() {
+    saveData() {
       this.dataAsJson = window.myDiagram.model.toJson();
     },
 
-    loadData: function() {
-      window.myDiagram.model = go.Model.fromJson(this.dataAsJson);
+    loadData() {
+      window.myDiagram.model = window.go.Model.fromJson(this.dataAsJson);
     },
   },
 });

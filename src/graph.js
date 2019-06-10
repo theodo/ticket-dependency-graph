@@ -1,5 +1,6 @@
-var go = require('gojs');
-var GO = go.GraphObject.make;
+const go = require('gojs');
+
+const GO = go.GraphObject.make;
 
 window.myDiagram = GO(go.Diagram, 'dependencyGraph', {
   initialContentAlignment: go.Spot.Center,
@@ -18,12 +19,13 @@ window.myDiagram.nodeTemplate = GO(
     layoutConditions: go.Part.LayoutAdded,
   },
   {
-    mouseDrop: function(e, node) {
-      var diagram = node.diagram;
-      var selnode = diagram.selection.first(); // assume just one Node in selection
+    mouseDrop(e, node) {
+      const { diagram } = node;
+      const selnode = diagram.selection.first(); // assume just one Node in selection
       if (selnode instanceof go.Node) {
         window.graphHandler.addDependency(node.data.key, selnode.data.key);
         selnode.data.hasJustBeenLinked = true;
+        // eslint-disable-next-line no-param-reassign
         node.isLayoutPositioned = true;
       }
     },
@@ -55,8 +57,8 @@ window.myDiagram.nodeTemplate = GO(
   )
 );
 
-//To be populated with Trello
-var myModel = GO(go.GraphLinksModel);
+// To be populated with Trello
+const myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
   { key: 1, complexity: 13, name: 'Connect to Trello to use the TDG' },
   {
@@ -103,22 +105,22 @@ window.myDiagram.linkTemplate = GO(
   GO(go.Shape, { strokeWidth: 5, stroke: '#555' })
 );
 
-myDiagram.addDiagramListener('SelectionDeleting', function(e) {
-  var part = e.subject.first(); // e.subject is the myDiagram.selection collection,
+window.myDiagram.addDiagramListener('SelectionDeleting', e => {
+  const part = e.subject.first(); // e.subject is the myDiagram.selection collection,
   // so we'll get the first since we know we only have one selection
   if (part instanceof go.Link) {
-    var childId = part.toNode.data.key;
-    var parentId = part.fromNode.data.key;
+    const childId = part.toNode.data.key;
+    const parentId = part.fromNode.data.key;
     window.trelloHandler.deleteTrelloDependency(parentId, childId);
   }
 });
 
-myDiagram.addDiagramListener('SelectionMoved', function(e) {
-  e.subject.each(function(part) {
+window.myDiagram.addDiagramListener('SelectionMoved', e => {
+  e.subject.each(part => {
     if (part.data.hasJustBeenLinked) {
-      part.data.hasJustBeenLinked = false;
-      part.isLayoutPositioned = true;
-    } else part.isLayoutPositioned = false;
+      part.data.hasJustBeenLinked = false; // eslint-disable-line no-param-reassign
+      part.isLayoutPositioned = true; // eslint-disable-line no-param-reassign
+    } else part.isLayoutPositioned = false; // eslint-disable-line no-param-reassign
   });
 });
 
