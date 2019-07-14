@@ -22,8 +22,9 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.0",
     "prettier": "^1.18.2",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
     "gojs": "^1.6.14",
