@@ -27,7 +27,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
-    "gojs": "^1.6.14",
+    "gojs": "^2.0.14",
     "jquery": "^3.4.1",
     "vue": "^2.6.10"
   }

@@ -7,7 +7,7 @@ window.myDiagram = GO(go.Diagram, 'dependencyGraph', {
   'undoManager.isEnabled': true,
   allowCopy: false,
   autoScale: go.Diagram.Uniform,
-  layout: GO(go.LayeredDigraphLayout, { angle: 90, layerSpacing: 10 }),
+  layout: GO(go.LayeredDigraphLayout, { direction: 90, layerSpacing: 10 }),
 });
 
 window.myDiagram.nodeTemplate = GO(
