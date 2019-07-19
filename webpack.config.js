@@ -14,4 +14,9 @@ module.exports = {
     contentBase: './',
     publicPath: '/dist/',
   },
+  resolve: {
+    alias: {
+      vue$: 'vue/dist/vue.js',
+    },
+  },
 };

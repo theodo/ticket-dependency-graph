@@ -234,9 +234,7 @@ window.trelloHandler = new Vue({
         for (let i = 0; i < ticketIds.length; i += 1) {
           if (ticketIds[i].ticketId === parentId) {
             window.Trello.delete(
-              `/checklists/${checklist.id}/checkItems/${
-                ticketIds[i].checkItemId
-              }`
+              `/checklists/${checklist.id}/checkItems/${ticketIds[i].checkItemId}`
             );
             console.log('Dependency deleted'); // eslint-disable-line no-console
             return;
