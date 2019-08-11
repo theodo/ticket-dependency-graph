@@ -88,11 +88,11 @@
           <div class="row">
             <div class="input-field col s6">
               <label for="child">The ticket id</label>
-              <input id="child" type="text" v-model="currentChild" />
+              <input id="child" type="number" v-model.number="currentChild" />
             </div>
             <div class="input-field col s6">
               <label for="parent">depends on the ticket</label>
-              <input id="parent" type="text" v-model="currentParent" />
+              <input id="parent" type="number" v-model.number="currentParent" />
             </div>
           </div>
           <button
