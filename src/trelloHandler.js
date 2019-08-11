@@ -92,7 +92,9 @@ window.trelloHandler = new Vue({
       }
 
       return this.selectBoard(boardChoiceId).then(() =>
-        Vue.nextTick(this.selectList(listChoiceId))
+        Vue.nextTick(() => {
+          this.selectList(listChoiceId);
+        })
       );
     },
 

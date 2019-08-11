@@ -35,13 +35,13 @@ window.graphHandler = new Vue({
     addGraphDependency(parent, child) {
       window.myDiagram.startTransaction('Add dependency');
       window.myDiagram.model.addLinkData({
-        from: parseInt(parent, 10),
-        to: parseInt(child, 10),
+        from: parent,
+        to: child,
       });
       window.myDiagram.commitTransaction('Add dependency');
 
-      this.currentChild = '';
-      this.currentParent = '';
+      this.currentChild = null;
+      this.currentParent = null;
     },
 
     addOrUpdateTicket(ticketId, ticketName) {
