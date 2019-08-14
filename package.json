@@ -29,6 +29,7 @@
   "dependencies": {
     "gojs": "^2.0.14",
     "jquery": "^3.4.1",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-analytics": "^5.17.0"
   }
 }
