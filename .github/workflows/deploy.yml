@@ -1,0 +1,35 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - auto-deploy
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: Set git identity
+        run: |
+          git config --global user.email "bot@theodo.fr"
+          git config --global user.name "Theodo Deploy Bot"
+
+      - name: Merge master into deploy branch
+        run: |
+          git checkout gh-pages
+          git merge origin/master
+
+      - name: Build app and deploy it
+        env:
+          GH_PAT_IVANP: ${{ secrets.GH_PAT_IVANP }}
+        run: |
+          npm install
+
+          git add dist
+          git commit -m "Add built files"
+          git push https://$GH_PAT_IVANP@github.com/theodo/ticket-dependency-graph.git gh-pages
