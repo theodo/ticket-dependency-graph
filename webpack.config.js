@@ -11,8 +11,7 @@ module.exports = {
     rules: [{ test: /\.css$/, loader: 'style!css' }],
   },
   devServer: {
-    contentBase: './',
-    publicPath: '/dist/',
+    contentBase: './dist/',
   },
   resolve: {
     alias: {
