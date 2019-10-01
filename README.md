@@ -15,7 +15,7 @@ npm install
 npm start
 ```
 
-Server should be running on `http://localhost:8080/webpack-dev-server/`
+Server should be running on `http://localhost:8080/`
 
 ## Usage
 
