@@ -20,7 +20,7 @@ Server should be running on `http://localhost:8080/webpack-dev-server/`
 ## Usage
 
 - Authorize the application to bind with your Trello account
-- Choosing a column will fetch all the cards from that colummn
+- Choosing a column will fetch all the cards from that column
 - Drag and drop a card on another to mark a dependency (or use form below the graph)
 - You can also use the form below the graph to add a dependency between two tickets based on their id
 - The dependency will be stored in the checklist "Dependencies" of the Trello card
