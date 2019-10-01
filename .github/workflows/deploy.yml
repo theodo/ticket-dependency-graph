@@ -1,0 +1,22 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build and Deploy
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          ACCESS_TOKEN: ${{ secrets.GH_PAT_IVANP }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: dist
+          BUILD_SCRIPT: npm install && npm run build
+          COMMIT_EMAIL: bot@theodo.fr
+          COMMIT_NAME: Theodo Deploy Bot
