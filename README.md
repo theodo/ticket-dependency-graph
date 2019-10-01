@@ -1,4 +1,4 @@
-# ticket-dependency-graph
+# Ticket Dependency Graph
 
 Use this tool with Trello to visualize the dependencies between your tickets
 
