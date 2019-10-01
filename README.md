@@ -17,6 +17,10 @@ npm start
 
 Server should be running on `http://localhost:8080/`
 
+## Deployment
+
+On every commit or merge on master, the app is automatically deployed to [Github Pages](https://theodo.github.io/ticket-dependency-graph/), thanks to a Github Action workflow.
+
 ## Usage
 
 - Authorize the application to bind with your Trello account
