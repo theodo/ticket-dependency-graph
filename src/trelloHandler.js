@@ -11,9 +11,9 @@ window.trelloHandler = new Vue({
   data: {
     authenticated: false,
     boards: null,
-    selectedBoard: null,
+    selectedBoard: '',
     lists: null,
-    selectedList: null,
+    selectedList: '',
     cards: null,
     loading: false,
     trelloUrl: null,
@@ -37,7 +37,7 @@ window.trelloHandler = new Vue({
     },
 
     authorize() {
-      window.Trello.deauthorize(); // Fix this
+      // window.Trello.deauthorize(); // Fix this
       window.Trello.authorize({
         type: 'popup',
         name: 'Ticket Dependency Graph',
