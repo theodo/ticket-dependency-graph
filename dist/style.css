@@ -1,6 +1,6 @@
 #dependencyGraph {
   height: calc(100vh - 180px);
-  border: 1px solid red;
+  border: 1px solid #9e9e9e;
 }
 
 .row {
