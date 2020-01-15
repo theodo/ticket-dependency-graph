@@ -1,18 +1,20 @@
 const Vue = require('vue');
 require('./graph.js');
 
-const getComplexityFromName = name => {
-  const matches = name.match(/^\((\d+[.,]?\d*)\).+$/);
-  if (!matches) return null;
-  return matches[1];
-};
-
-const getNameWithoutComplexity = name => {
-  const matchedComplexity = getComplexityFromName(name);
-  if (matchedComplexity) {
-    return name.replace(`(${matchedComplexity})`, '');
-  }
-  return name;
+const parseTicketName = name => {
+  const matches = name.match(
+    /^(?:\[(?<complexityReal>\d+[.,]?\d*)\])? ?(?:\((?<complexityEstimation>\d+[.,]?\d*)\))?(?: ?)(?<name>.+)$/
+  );
+  if (!matches) return {
+    name,
+    complexityEstimation: null,
+    complexityReal: null
+  };
+  return {
+    name: matches[3] ? matches[3] : '',
+    complexityEstimation: matches[2] ? matches[2] : null,
+    complexityReal: matches[1] ? matches[1] : null
+  };
 };
 
 window.graphHandler = new Vue({
@@ -46,13 +48,11 @@ window.graphHandler = new Vue({
 
     addOrUpdateTicket(ticketId, ticketName) {
       const currentNode = window.myDiagram.model.findNodeDataForKey(ticketId);
+      const ticketInfo = parseTicketName(ticketName);
       if (currentNode == null) {
         window.myDiagram.startTransaction('Add ticket');
-        const newTicket = {
-          key: ticketId,
-          name: getNameWithoutComplexity(ticketName),
-          complexity: getComplexityFromName(ticketName),
-        };
+        const newTicket = ticketInfo;
+        newTicket.key = ticketId;
         window.myDiagram.model.addNodeData(newTicket);
         window.myDiagram.commitTransaction('Add ticket');
       } else {
@@ -60,12 +60,17 @@ window.graphHandler = new Vue({
         window.myDiagram.model.setDataProperty(
           currentNode,
           'name',
-          getNameWithoutComplexity(ticketName)
+          ticketInfo.name
         );
         window.myDiagram.model.setDataProperty(
           currentNode,
-          'complexity',
-          getComplexityFromName(ticketName)
+          'complexityEstimation',
+          ticketInfo.complexityEstimation
+        );
+        window.myDiagram.model.setDataProperty(
+          currentNode,
+          'complexityReal',
+          ticketInfo.complexityReal
         );
         window.myDiagram.commitTransaction('Update ticket');
       }

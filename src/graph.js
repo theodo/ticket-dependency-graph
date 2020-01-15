@@ -41,8 +41,13 @@ window.myDiagram.nodeTemplate = GO(
     ),
     GO(
       go.TextBlock,
-      { margin: 12, stroke: '#64AD35', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexity')
+      { margin: 12, stroke: '#AD6935', font: 'bold 14px sans-serif' },
+      new go.Binding('text', 'complexityReal')
+    ),
+    GO(
+      go.TextBlock,
+      { margin: 4, stroke: '#64AD35', font: 'bold 14px sans-serif' },
+      new go.Binding('text', 'complexityEstimation')
     ),
     GO(
       go.TextBlock,
@@ -60,36 +65,41 @@ window.myDiagram.nodeTemplate = GO(
 // To be populated with Trello
 const myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
-  { key: 1, complexity: 13, name: 'Connect to Trello to use the TDG' },
+  { key: 1, complexityEstimation: 13, complexityReal: 8, name: 'Connect to Trello to use the TDG' },
   {
     key: 2,
-    complexity: 5,
+    complexityEstimation: 5,
+    complexityReal: 8,
     name: "Choose a board, a list, and you're good to go!",
   },
   {
     key: 3,
-    complexity: 8,
+    complexityEstimation: null,
+    complexityReal: 5,
     name:
       'You can add a link between two tickets given their id using the form below',
   },
   {
     key: 4,
-    complexity: 1,
+    complexityEstimation: 1,
+    complexityReal: 1,
     name:
       'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
   },
   {
     key: 5,
-    complexity: 0.5,
+    complexityEstimation: 0.5,
+    complexityReal: null,
     name:
       'To delete a link, select it with your mouse and press the Delete key',
   },
   {
     key: 6,
-    complexity: null,
+    complexityEstimation: null,
+    complexityReal: null,
     name: 'Dependencies will be stored on your Trello board!',
   },
-  { key: 7, complexity: null, name: 'Enjoy!' },
+  { key: 7, complexityEstimation: null, complexityReal: null, name: 'Enjoy!' },
 ];
 
 myModel.linkDataArray = [
