@@ -41,13 +41,13 @@ window.myDiagram.nodeTemplate = GO(
     ),
     GO(
       go.TextBlock,
-      { margin: 12, stroke: '#AD6935', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexityReal')
-    ),
+      { margin: 12, stroke: '#64AD35', font: 'bold 14px sans-serif' },
+      new go.Binding('text', 'complexityEstimation')
+      ),
     GO(
       go.TextBlock,
-      { margin: 4, stroke: '#64AD35', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexityEstimation')
+      { margin: 4, stroke: '#AD6935', font: 'bold 14px sans-serif' },
+      new go.Binding('text', 'complexityReal')
     ),
     GO(
       go.TextBlock,
