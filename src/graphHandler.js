@@ -5,15 +5,16 @@ const parseTicketName = name => {
   const matches = name.match(
     /^(?:\[(?<complexityReal>\d+[.,]?\d*)\])? ?(?:\((?<complexityEstimation>\d+[.,]?\d*)\))?(?: ?)(?<name>.+)$/
   );
-  if (!matches) return {
-    name,
-    complexityEstimation: null,
-    complexityReal: null
-  };
+  if (!matches)
+    return {
+      name,
+      complexityEstimation: null,
+      complexityReal: null,
+    };
   return {
     name: matches[3] ? matches[3] : '',
     complexityEstimation: matches[2] ? matches[2] : null,
-    complexityReal: matches[1] ? matches[1] : null
+    complexityReal: matches[1] ? matches[1] : null,
   };
 };
 
