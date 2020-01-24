@@ -1,6 +1,6 @@
-const Vue = require('vue');
-require('./trelloApiHelper.js');
-require('./graphHandler.js');
+import Vue from 'vue';
+import './trelloApiHelper';
+import './graphHandler';
 
 const lastBoardChoice = 'lastBoardChoice';
 const lastListChoice = 'lastListChoice';

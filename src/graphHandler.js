@@ -1,5 +1,5 @@
-const Vue = require('vue');
-require('./graph.js');
+import Vue from 'vue';
+import './graph';
 
 const parseTicketName = name => {
   const matches = name.match(

@@ -1,4 +1,4 @@
-const go = require('gojs');
+import go from 'gojs';
 
 const GO = go.GraphObject.make;
 
@@ -43,7 +43,7 @@ window.myDiagram.nodeTemplate = GO(
       go.TextBlock,
       { margin: 12, stroke: '#64AD35', font: 'bold 14px sans-serif' },
       new go.Binding('text', 'complexityEstimation')
-      ),
+    ),
     GO(
       go.TextBlock,
       { margin: 4, stroke: '#AD6935', font: 'bold 14px sans-serif' },
@@ -65,7 +65,12 @@ window.myDiagram.nodeTemplate = GO(
 // To be populated with Trello
 const myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
-  { key: 1, complexityEstimation: 13, complexityReal: 8, name: 'Connect to Trello to use the TDG' },
+  {
+    key: 1,
+    complexityEstimation: 13,
+    complexityReal: 8,
+    name: 'Connect to Trello to use the TDG',
+  },
   {
     key: 2,
     complexityEstimation: 5,
