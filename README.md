@@ -46,3 +46,8 @@ Github Actions cannot be run anymore on this repo. The app must be deployed manu
 
 - Tickets that are moved to another column disappear from the graph
 - [More issues](https://github.com/Varal7/ticket-dependency-graph/issues)
+
+## Feature and bug fix backlog
+
+Managed on Trello: https://trello.com/b/FUZ31YuG/ticket-dependency-graph  
+You must be a member of the Theodo team on Trello to view it.
