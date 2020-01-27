@@ -15,6 +15,7 @@
       media="screen,projection"
     />
     <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="./favicon.ico" />
   </head>
   <body>
     <div>
@@ -51,9 +52,9 @@
               <option value="" disabled selected style="display: none;"
                 >Choose a board</option
               >
-              <option v-for="board in boards" v-bind:value="board.id">{{
-                board.name
-              }}</option>
+              <option v-for="board in boards" v-bind:value="board.id"
+                >{{ board.name }}</option
+              >
             </select>
           </div>
           <div class="col s4">
@@ -66,9 +67,9 @@
               <option value="" disabled selected style="display: none;"
                 >Choose the sprint backlog column</option
               >
-              <option v-for="list in lists" v-bind:value="list.id">{{
-                list.name
-              }}</option>
+              <option v-for="list in lists" v-bind:value="list.id"
+                >{{ list.name }}</option
+              >
             </select>
           </div>
           <div class="col s2">
