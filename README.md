@@ -19,11 +19,7 @@ Server should be running on `http://localhost:8080/`
 
 ## Deployment
 
-On every commit or merge on master, the app is automatically deployed to [Github Pages](https://theodo.github.io/ticket-dependency-graph/), thanks to a Github Action workflow.
-
-### :warning: Update 10/12/2019
-
-Github Actions cannot be run anymore on this repo. The app must be deployed manually in the meantime, by pushing the `dist/` files (including the built `app.js` file) to the `gh-pages` branch.
+On every commit or merge on master, the app is automatically deployed to [Github Pages](https://theodo.github.io/ticket-dependency-graph/), thanks to a CircleCI workflow.
 
 ## Usage
 
