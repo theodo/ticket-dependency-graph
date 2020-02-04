@@ -34,6 +34,24 @@ window.myDiagram.nodeTemplate = GO(
   GO(
     go.Panel,
     'Horizontal',
+    GO(go.Panel, 'Vertical', new go.Binding('itemArray', 'labels'), {
+      itemTemplate: GO(
+        go.Panel,
+        'Auto',
+        { margin: 2 },
+        GO(
+          go.Shape,
+          'RoundedRectangle',
+          { fill: '#91E3E0', stroke: null },
+          new go.Binding('fill', 'color')
+        ),
+        GO(go.TextBlock, new go.Binding('text', 'name'), {
+          margin: 1,
+          font: 'bold 12px sans-serif',
+          stroke: 'white',
+        })
+      ),
+    }),
     GO(
       go.TextBlock,
       { margin: 12, font: 'bold 20px sans-serif' },
@@ -70,12 +88,14 @@ myModel.nodeDataArray = [
     complexityEstimation: 13,
     complexityReal: 8,
     name: 'Connect to Trello to use the TDG',
+    labels: [{ color: 'blue', name: 'connexion' }],
   },
   {
     key: 2,
     complexityEstimation: 5,
     complexityReal: 8,
     name: "Choose a board, a list, and you're good to go!",
+    labels: [{ color: 'pink', name: 'actions' }],
   },
   {
     key: 3,
@@ -83,6 +103,7 @@ myModel.nodeDataArray = [
     complexityReal: 5,
     name:
       'You can add a link between two tickets given their id using the form below',
+    labels: [{ color: 'pink', name: 'actions' }],
   },
   {
     key: 4,
@@ -90,6 +111,7 @@ myModel.nodeDataArray = [
     complexityReal: 1,
     name:
       'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
+    labels: [{ color: 'pink', name: 'actions' }],
   },
   {
     key: 5,
@@ -97,12 +119,14 @@ myModel.nodeDataArray = [
     complexityReal: null,
     name:
       'To delete a link, select it with your mouse and press the Delete key',
+    labels: [{ color: 'purple', name: 'tips' }],
   },
   {
     key: 6,
     complexityEstimation: null,
     complexityReal: null,
     name: 'Dependencies will be stored on your Trello board!',
+    labels: [{ color: 'purple', name: 'tips' }],
   },
   { key: 7, complexityEstimation: null, complexityReal: null, name: 'Enjoy!' },
 ];

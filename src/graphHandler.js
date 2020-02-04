@@ -47,13 +47,14 @@ window.graphHandler = new Vue({
       this.currentParent = null;
     },
 
-    addOrUpdateTicket(ticketId, ticketName) {
+    addOrUpdateTicket({ ticketId, ticketName, ticketLabels }) {
       const currentNode = window.myDiagram.model.findNodeDataForKey(ticketId);
       const ticketInfo = parseTicketName(ticketName);
       if (currentNode == null) {
         window.myDiagram.startTransaction('Add ticket');
         const newTicket = ticketInfo;
         newTicket.key = ticketId;
+        newTicket.labels = ticketLabels;
         window.myDiagram.model.addNodeData(newTicket);
         window.myDiagram.commitTransaction('Add ticket');
       } else {
@@ -72,6 +73,11 @@ window.graphHandler = new Vue({
           currentNode,
           'complexityReal',
           ticketInfo.complexityReal
+        );
+        window.myDiagram.model.setDataProperty(
+          currentNode,
+          'labels',
+          ticketLabels
         );
         window.myDiagram.commitTransaction('Update ticket');
       }

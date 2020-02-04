@@ -118,7 +118,11 @@ window.trelloHandler = new Vue({
     addOrUpdateCards() {
       for (let i = 0; i < this.cards.length; i += 1) {
         const card = this.cards[i];
-        window.graphHandler.addOrUpdateTicket(card.idShort, card.name);
+        window.graphHandler.addOrUpdateTicket({
+          ticketId: card.idShort,
+          ticketName: card.name,
+          ticketLabels: card.labels,
+        });
       }
     },
 
