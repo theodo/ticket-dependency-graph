@@ -34,48 +34,103 @@ window.myDiagram.nodeTemplate = GO(
   GO(
     go.Panel,
     'Horizontal',
-    GO(go.Panel, 'Vertical', new go.Binding('itemArray', 'labels'), {
-      itemTemplate: GO(
-        go.Panel,
-        'Auto',
-        { margin: 2 },
-        GO(
-          go.Shape,
-          'RoundedRectangle',
-          { fill: '#91E3E0', stroke: null },
-          new go.Binding('fill', 'color')
-        ),
-        GO(go.TextBlock, new go.Binding('text', 'name'), {
-          margin: 1,
-          font: 'bold 12px sans-serif',
-          stroke: 'white',
-        })
-      ),
-    }),
     GO(
-      go.TextBlock,
-      { margin: 12, font: 'bold 20px sans-serif' },
-      new go.Binding('text', 'key')
-    ),
-    GO(
-      go.TextBlock,
-      { margin: 12, stroke: '#64AD35', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexityEstimation')
-    ),
-    GO(
-      go.TextBlock,
-      { margin: 4, stroke: '#AD6935', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexityReal')
-    ),
-    GO(
-      go.TextBlock,
+      go.Panel,
+      'Vertical',
+      { alignment: go.Spot.Left },
+      new go.Binding('itemArray', 'labels'),
       {
-        margin: 8,
-        font: 'bold 10px sans-serif',
-        width: 100,
-        wrap: go.TextBlock.WrapFit,
-      },
-      new go.Binding('text', 'name')
+        itemTemplate: GO(
+          go.Panel,
+          'Auto',
+          { margin: 2, alignment: go.Spot.Left },
+          GO(
+            go.Shape,
+            'RoundedRectangle',
+            { fill: '#91E3E0', stroke: null },
+            new go.Binding('fill', 'color')
+          ),
+          GO(go.TextBlock, new go.Binding('text', 'name'), {
+            margin: new go.Margin(1, 4),
+            font: 'bold 10px sans-serif',
+            stroke: 'white',
+          })
+        ),
+      }
+    ),
+    GO(
+      go.Panel,
+      'Vertical',
+      { padding: 6 },
+      GO(
+        go.Panel,
+        'Horizontal',
+        { alignment: go.Spot.Left },
+        GO(
+          go.Panel,
+          'Auto',
+          { margin: 2 },
+          GO(go.Shape, 'RoundedRectangle', { fill: '#FFDD00', stroke: null }),
+          GO(go.TextBlock, new go.Binding('text', 'keyHashtag'), {
+            margin: 1,
+            font: 'bold 12px sans-serif',
+            stroke: 'black',
+          })
+        ),
+        GO(
+          go.Panel,
+          'Auto',
+          { margin: 2 },
+          GO(
+            go.Shape,
+            'RoundedRectangle',
+            new go.Binding('visible', 'isComplexityEstimationVisible'),
+            { fill: '#47bae0', stroke: null }
+          ),
+          GO(
+            go.TextBlock,
+            new go.Binding('text', 'complexityEstimation'),
+            new go.Binding('visible', 'isComplexityEstimationVisible'),
+            {
+              margin: 1,
+              font: 'bold 12px sans-serif',
+              stroke: 'white',
+            }
+          )
+        ),
+        GO(
+          go.Panel,
+          'Auto',
+          { margin: 2 },
+          GO(
+            go.Shape,
+            'RoundedRectangle',
+            new go.Binding('visible', 'isComplexityRealVisible'),
+            { fill: '#81cae2', stroke: null }
+          ),
+          GO(
+            go.TextBlock,
+            new go.Binding('text', 'complexityReal'),
+            new go.Binding('visible', 'isComplexityRealVisible'),
+            {
+              margin: 1,
+              font: 'bold 12px sans-serif',
+              stroke: 'white',
+            }
+          )
+        )
+      ),
+      GO(
+        go.TextBlock,
+        {
+          margin: 2,
+          font: '12px sans-serif',
+          width: 120,
+          wrap: go.TextBlock.WrapFit,
+          alignment: go.Spot.Left,
+        },
+        new go.Binding('text', 'name')
+      )
     )
   )
 );
@@ -85,50 +140,77 @@ const myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
   {
     key: 1,
+    keyHashtag: '#1',
     complexityEstimation: 13,
     complexityReal: 8,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: true,
     name: 'Connect to Trello to use the TDG',
     labels: [{ color: 'blue', name: 'connexion' }],
   },
   {
     key: 2,
+    keyHashtag: '#2',
     complexityEstimation: 5,
     complexityReal: 8,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: true,
+    isVisible: false,
     name: "Choose a board, a list, and you're good to go!",
     labels: [{ color: 'pink', name: 'actions' }],
   },
   {
     key: 3,
+    keyHashtag: '#3',
     complexityEstimation: null,
     complexityReal: 5,
+    isComplexityEstimationVisible: false,
+    isComplexityRealVisible: true,
     name:
       'You can add a link between two tickets given their id using the form below',
     labels: [{ color: 'pink', name: 'actions' }],
   },
   {
     key: 4,
+    keyHashtag: '#4',
     complexityEstimation: 1,
     complexityReal: 1,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: true,
     name:
       'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
     labels: [{ color: 'pink', name: 'actions' }],
   },
   {
     key: 5,
+    keyHashtag: '#5',
     complexityEstimation: 0.5,
     complexityReal: null,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: false,
     name:
       'To delete a link, select it with your mouse and press the Delete key',
     labels: [{ color: 'purple', name: 'tips' }],
   },
   {
     key: 6,
+    keyHashtag: '#6',
     complexityEstimation: null,
     complexityReal: null,
+    isComplexityEstimationVisible: false,
+    isComplexityRealVisible: false,
     name: 'Dependencies will be stored on your Trello board!',
     labels: [{ color: 'purple', name: 'tips' }],
   },
-  { key: 7, complexityEstimation: null, complexityReal: null, name: 'Enjoy!' },
+  {
+    key: 7,
+    keyHashtag: '#7',
+    complexityEstimation: null,
+    complexityReal: null,
+    isComplexityEstimationVisible: false,
+    isComplexityRealVisible: false,
+    name: 'Enjoy!',
+  },
 ];
 
 myModel.linkDataArray = [

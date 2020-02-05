@@ -54,6 +54,9 @@ window.graphHandler = new Vue({
         window.myDiagram.startTransaction('Add ticket');
         const newTicket = ticketInfo;
         newTicket.key = ticketId;
+        newTicket.keyHashtag = `#${ticketId}`;
+        newTicket.isComplexityEstimationVisible = !!ticketInfo.complexityEstimation;
+        newTicket.isComplexityRealVisible = !!ticketInfo.complexityReal;
         newTicket.labels = ticketLabels;
         window.myDiagram.model.addNodeData(newTicket);
         window.myDiagram.commitTransaction('Add ticket');
@@ -68,6 +71,16 @@ window.graphHandler = new Vue({
           currentNode,
           'complexityEstimation',
           ticketInfo.complexityEstimation
+        );
+        window.myDiagram.model.setDataProperty(
+          currentNode,
+          'isComplexityEstimationVisible',
+          !!ticketInfo.complexityEstimation
+        );
+        window.myDiagram.model.setDataProperty(
+          currentNode,
+          'isComplexityRealVisible',
+          !!ticketInfo.complexityReal
         );
         window.myDiagram.model.setDataProperty(
           currentNode,
