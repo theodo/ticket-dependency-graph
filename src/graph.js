@@ -23,6 +23,7 @@ const getNumberNode = (
       margin: 1,
       font: 'bold 12px sans-serif',
       stroke: textStrokeColor,
+      textAlign: 'center',
     },
   ];
   if (visibleBindingKey) {
