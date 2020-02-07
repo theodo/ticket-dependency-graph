@@ -2,6 +2,81 @@ import go from 'gojs';
 
 const GO = go.GraphObject.make;
 
+const getNumberNode = (
+  textBindingKey,
+  shapeFillColor,
+  textStrokeColor,
+  visibleBindingKey
+) => {
+  const rectangleShapeProperties = [
+    go.Shape,
+    'RoundedRectangle',
+    {
+      fill: shapeFillColor,
+      stroke: null,
+    },
+  ];
+  const textShapeProperties = [
+    go.TextBlock,
+    new go.Binding('text', textBindingKey),
+    {
+      margin: 1,
+      font: 'bold 12px sans-serif',
+      stroke: textStrokeColor,
+    },
+  ];
+  if (visibleBindingKey) {
+    rectangleShapeProperties.push(new go.Binding('visible', visibleBindingKey));
+    textShapeProperties.push(new go.Binding('visible', visibleBindingKey));
+  }
+  return GO(
+    go.Panel,
+    'Auto',
+    { margin: 2 },
+    GO(...rectangleShapeProperties),
+    GO(...textShapeProperties)
+  );
+};
+
+const trelloCardNumberNodes = GO(
+  go.Panel,
+  'Horizontal',
+  { alignment: go.Spot.Left },
+  getNumberNode('keyHashtag', '#FFDD00', 'black', null),
+  getNumberNode(
+    'complexityEstimation',
+    '#47bae0',
+    'white',
+    'isComplexityEstimationVisible'
+  ),
+  getNumberNode('complexityReal', '#81cae2', 'white', 'isComplexityRealVisible')
+);
+
+const trelloCardLabels = GO(
+  go.Panel,
+  'Vertical',
+  { alignment: go.Spot.Left },
+  new go.Binding('itemArray', 'labels'),
+  {
+    itemTemplate: GO(
+      go.Panel,
+      'Auto',
+      { margin: 2, alignment: go.Spot.Left },
+      GO(
+        go.Shape,
+        'RoundedRectangle',
+        { fill: 'purple', stroke: null },
+        new go.Binding('fill', 'color')
+      ),
+      GO(go.TextBlock, new go.Binding('text', 'name'), {
+        margin: new go.Margin(1, 4),
+        font: 'bold 10px sans-serif',
+        stroke: 'white',
+      })
+    ),
+  }
+);
+
 window.myDiagram = GO(go.Diagram, 'dependencyGraph', {
   initialContentAlignment: go.Spot.Center,
   'undoManager.isEnabled': true,
@@ -34,92 +109,12 @@ window.myDiagram.nodeTemplate = GO(
   GO(
     go.Panel,
     'Horizontal',
-    GO(
-      go.Panel,
-      'Vertical',
-      { alignment: go.Spot.Left },
-      new go.Binding('itemArray', 'labels'),
-      {
-        itemTemplate: GO(
-          go.Panel,
-          'Auto',
-          { margin: 2, alignment: go.Spot.Left },
-          GO(
-            go.Shape,
-            'RoundedRectangle',
-            { fill: '#91E3E0', stroke: null },
-            new go.Binding('fill', 'color')
-          ),
-          GO(go.TextBlock, new go.Binding('text', 'name'), {
-            margin: new go.Margin(1, 4),
-            font: 'bold 10px sans-serif',
-            stroke: 'white',
-          })
-        ),
-      }
-    ),
+    trelloCardLabels,
     GO(
       go.Panel,
       'Vertical',
       { padding: 6 },
-      GO(
-        go.Panel,
-        'Horizontal',
-        { alignment: go.Spot.Left },
-        GO(
-          go.Panel,
-          'Auto',
-          { margin: 2 },
-          GO(go.Shape, 'RoundedRectangle', { fill: '#FFDD00', stroke: null }),
-          GO(go.TextBlock, new go.Binding('text', 'keyHashtag'), {
-            margin: 1,
-            font: 'bold 12px sans-serif',
-            stroke: 'black',
-          })
-        ),
-        GO(
-          go.Panel,
-          'Auto',
-          { margin: 2 },
-          GO(
-            go.Shape,
-            'RoundedRectangle',
-            new go.Binding('visible', 'isComplexityEstimationVisible'),
-            { fill: '#47bae0', stroke: null }
-          ),
-          GO(
-            go.TextBlock,
-            new go.Binding('text', 'complexityEstimation'),
-            new go.Binding('visible', 'isComplexityEstimationVisible'),
-            {
-              margin: 1,
-              font: 'bold 12px sans-serif',
-              stroke: 'white',
-            }
-          )
-        ),
-        GO(
-          go.Panel,
-          'Auto',
-          { margin: 2 },
-          GO(
-            go.Shape,
-            'RoundedRectangle',
-            new go.Binding('visible', 'isComplexityRealVisible'),
-            { fill: '#81cae2', stroke: null }
-          ),
-          GO(
-            go.TextBlock,
-            new go.Binding('text', 'complexityReal'),
-            new go.Binding('visible', 'isComplexityRealVisible'),
-            {
-              margin: 1,
-              font: 'bold 12px sans-serif',
-              stroke: 'white',
-            }
-          )
-        )
-      ),
+      trelloCardNumberNodes,
       GO(
         go.TextBlock,
         {
