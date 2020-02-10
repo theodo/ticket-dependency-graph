@@ -52,12 +52,14 @@ window.graphHandler = new Vue({
       const ticketInfo = parseTicketName(ticketName);
       if (currentNode == null) {
         window.myDiagram.startTransaction('Add ticket');
-        const newTicket = ticketInfo;
-        newTicket.key = ticketId;
-        newTicket.keyHashtag = `#${ticketId}`;
-        newTicket.isComplexityEstimationVisible = !!ticketInfo.complexityEstimation;
-        newTicket.isComplexityRealVisible = !!ticketInfo.complexityReal;
-        newTicket.labels = ticketLabels;
+        const newTicket = {
+          ...ticketInfo,
+          key: ticketId,
+          keyHashtag: `#${ticketId}`,
+          isComplexityEstimationVisible: !!ticketInfo.complexityEstimation,
+          isComplexityRealVisible: !!ticketInfo.complexityReal,
+          labels: ticketLabels,
+        };
         window.myDiagram.model.addNodeData(newTicket);
         window.myDiagram.commitTransaction('Add ticket');
       } else {
