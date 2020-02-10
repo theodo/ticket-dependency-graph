@@ -142,7 +142,7 @@ myModel.nodeDataArray = [
     isComplexityEstimationVisible: true,
     isComplexityRealVisible: true,
     name: 'Connect to Trello to use the TDG',
-    labels: [{ color: 'blue', name: 'connexion' }],
+    labels: [{ color: '#0079bf', name: 'connexion' }],
   },
   {
     key: 2,
@@ -153,7 +153,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: true,
     isVisible: false,
     name: "Choose a board, a list, and you're good to go!",
-    labels: [{ color: 'pink', name: 'actions' }],
+    labels: [{ color: '#ff78cb', name: 'actions' }],
   },
   {
     key: 3,
@@ -164,7 +164,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: true,
     name:
       'You can add a link between two tickets given their id using the form below',
-    labels: [{ color: 'pink', name: 'actions' }],
+    labels: [{ color: '#ff78cb', name: 'actions' }],
   },
   {
     key: 4,
@@ -175,7 +175,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: true,
     name:
       'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
-    labels: [{ color: 'pink', name: 'actions' }],
+    labels: [{ color: '#ff78cb', name: 'actions' }],
   },
   {
     key: 5,
@@ -196,7 +196,7 @@ myModel.nodeDataArray = [
     isComplexityEstimationVisible: false,
     isComplexityRealVisible: false,
     name: 'Dependencies will be stored on your Trello board!',
-    labels: [{ color: 'purple', name: 'tips' }],
+    labels: [{ color: '#c377e0', name: 'tips' }],
   },
   {
     key: 7,
