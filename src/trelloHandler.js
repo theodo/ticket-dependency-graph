@@ -5,6 +5,19 @@ import './graphHandler';
 const lastBoardChoice = 'lastBoardChoice';
 const lastListChoice = 'lastListChoice';
 
+const trelloColors = {
+  black: '#344563',
+  blue: '#0079bf',
+  green: '#61bd4f',
+  lime: '#51e898',
+  orange: '#ff9f1a',
+  pink: '#ff78cb',
+  purple: '#c377e0',
+  red: '#eb5a46',
+  sky: '#00c2e0',
+  yellow: '#f2d600',
+};
+
 window.trelloHandler = new Vue({
   el: '#trello',
 
@@ -118,7 +131,14 @@ window.trelloHandler = new Vue({
     addOrUpdateCards() {
       for (let i = 0; i < this.cards.length; i += 1) {
         const card = this.cards[i];
-        window.graphHandler.addOrUpdateTicket(card.idShort, card.name);
+        window.graphHandler.addOrUpdateTicket({
+          ticketId: card.idShort,
+          ticketName: card.name,
+          ticketLabels: card.labels.map(ticketLabel => ({
+            color: trelloColors[ticketLabel.color],
+            name: ticketLabel.name,
+          })),
+        });
       }
     },
 

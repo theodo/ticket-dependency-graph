@@ -2,6 +2,82 @@ import go from 'gojs';
 
 const GO = go.GraphObject.make;
 
+const getNumberNode = (
+  textBindingKey,
+  shapeFillColor,
+  textStrokeColor,
+  visibleBindingKey
+) => {
+  const rectangleShapeProperties = [
+    go.Shape,
+    'RoundedRectangle',
+    {
+      fill: shapeFillColor,
+      stroke: null,
+    },
+  ];
+  const textShapeProperties = [
+    go.TextBlock,
+    new go.Binding('text', textBindingKey),
+    {
+      margin: 1,
+      font: 'bold 12px sans-serif',
+      stroke: textStrokeColor,
+      textAlign: 'center',
+    },
+  ];
+  if (visibleBindingKey) {
+    rectangleShapeProperties.push(new go.Binding('visible', visibleBindingKey));
+    textShapeProperties.push(new go.Binding('visible', visibleBindingKey));
+  }
+  return GO(
+    go.Panel,
+    'Auto',
+    { margin: 2 },
+    GO(...rectangleShapeProperties),
+    GO(...textShapeProperties)
+  );
+};
+
+const trelloCardNumberNodes = GO(
+  go.Panel,
+  'Horizontal',
+  { alignment: go.Spot.Left },
+  getNumberNode('keyHashtag', '#FFDD00', 'black', null),
+  getNumberNode(
+    'complexityEstimation',
+    '#47bae0',
+    'white',
+    'isComplexityEstimationVisible'
+  ),
+  getNumberNode('complexityReal', '#81cae2', 'white', 'isComplexityRealVisible')
+);
+
+const trelloCardLabels = GO(
+  go.Panel,
+  'Vertical',
+  { alignment: go.Spot.Left },
+  new go.Binding('itemArray', 'labels'),
+  {
+    itemTemplate: GO(
+      go.Panel,
+      'Auto',
+      { margin: 2, alignment: go.Spot.Left },
+      GO(
+        go.Shape,
+        'RoundedRectangle',
+        { fill: 'purple', stroke: null },
+        new go.Binding('fill', 'color')
+      ),
+      GO(go.TextBlock, new go.Binding('text', 'name'), {
+        margin: new go.Margin(1, 4),
+        font: 'bold 10px sans-serif',
+        stroke: 'white',
+      })
+    ),
+  }
+);
+
 window.myDiagram = GO(go.Diagram, 'dependencyGraph', {
   initialContentAlignment: go.Spot.Center,
   'undoManager.isEnabled': true,
@@ -34,30 +110,23 @@ window.myDiagram.nodeTemplate = GO(
   GO(
     go.Panel,
     'Horizontal',
+    trelloCardLabels,
     GO(
-      go.TextBlock,
-      { margin: 12, font: 'bold 20px sans-serif' },
-      new go.Binding('text', 'key')
-    ),
-    GO(
-      go.TextBlock,
-      { margin: 12, stroke: '#64AD35', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexityEstimation')
-    ),
-    GO(
-      go.TextBlock,
-      { margin: 4, stroke: '#AD6935', font: 'bold 14px sans-serif' },
-      new go.Binding('text', 'complexityReal')
-    ),
-    GO(
-      go.TextBlock,
-      {
-        margin: 8,
-        font: 'bold 10px sans-serif',
-        width: 100,
-        wrap: go.TextBlock.WrapFit,
-      },
-      new go.Binding('text', 'name')
+      go.Panel,
+      'Vertical',
+      { padding: 6 },
+      trelloCardNumberNodes,
+      GO(
+        go.TextBlock,
+        {
+          margin: 2,
+          font: '12px sans-serif',
+          width: 120,
+          wrap: go.TextBlock.WrapFit,
+          alignment: go.Spot.Left,
+        },
+        new go.Binding('text', 'name')
+      )
     )
   )
 );
@@ -67,44 +136,77 @@ const myModel = GO(go.GraphLinksModel);
 myModel.nodeDataArray = [
   {
     key: 1,
+    keyHashtag: '#1',
     complexityEstimation: 13,
     complexityReal: 8,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: true,
     name: 'Connect to Trello to use the TDG',
+    labels: [{ color: '#0079bf', name: 'connexion' }],
   },
   {
     key: 2,
+    keyHashtag: '#2',
     complexityEstimation: 5,
     complexityReal: 8,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: true,
+    isVisible: false,
     name: "Choose a board, a list, and you're good to go!",
+    labels: [{ color: '#ff78cb', name: 'actions' }],
   },
   {
     key: 3,
+    keyHashtag: '#3',
     complexityEstimation: null,
     complexityReal: 5,
+    isComplexityEstimationVisible: false,
+    isComplexityRealVisible: true,
     name:
       'You can add a link between two tickets given their id using the form below',
+    labels: [{ color: '#ff78cb', name: 'actions' }],
   },
   {
     key: 4,
+    keyHashtag: '#4',
     complexityEstimation: 1,
     complexityReal: 1,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: true,
     name:
       'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
+    labels: [{ color: '#ff78cb', name: 'actions' }],
   },
   {
     key: 5,
+    keyHashtag: '#5',
     complexityEstimation: 0.5,
     complexityReal: null,
+    isComplexityEstimationVisible: true,
+    isComplexityRealVisible: false,
     name:
       'To delete a link, select it with your mouse and press the Delete key',
+    labels: [{ color: 'purple', name: 'tips' }],
   },
   {
     key: 6,
+    keyHashtag: '#6',
     complexityEstimation: null,
     complexityReal: null,
+    isComplexityEstimationVisible: false,
+    isComplexityRealVisible: false,
     name: 'Dependencies will be stored on your Trello board!',
+    labels: [{ color: '#c377e0', name: 'tips' }],
   },
-  { key: 7, complexityEstimation: null, complexityReal: null, name: 'Enjoy!' },
+  {
+    key: 7,
+    keyHashtag: '#7',
+    complexityEstimation: null,
+    complexityReal: null,
+    isComplexityEstimationVisible: false,
+    isComplexityRealVisible: false,
+    name: 'Enjoy!',
+  },
 ];
 
 myModel.linkDataArray = [
