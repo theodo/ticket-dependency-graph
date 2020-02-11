@@ -1,4 +1,5 @@
 import go from 'gojs';
+import trelloColors from './trelloColors';
 
 const GO = go.GraphObject.make;
 
@@ -66,7 +67,7 @@ const trelloCardLabels = GO(
       GO(
         go.Shape,
         'RoundedRectangle',
-        { fill: 'purple', stroke: null },
+        { fill: trelloColors.purple, stroke: null }, // default to purple when the color coming from a Trello card label isn't in the trelloColors list
         new go.Binding('fill', 'color')
       ),
       GO(go.TextBlock, new go.Binding('text', 'name'), {
@@ -142,7 +143,7 @@ myModel.nodeDataArray = [
     isComplexityEstimationVisible: true,
     isComplexityRealVisible: true,
     name: 'Connect to Trello to use the TDG',
-    labels: [{ color: '#0079bf', name: 'connexion' }],
+    labels: [{ color: trelloColors.blue, name: 'connexion' }],
   },
   {
     key: 2,
@@ -153,7 +154,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: true,
     isVisible: false,
     name: "Choose a board, a list, and you're good to go!",
-    labels: [{ color: '#ff78cb', name: 'actions' }],
+    labels: [{ color: trelloColors.pink, name: 'actions' }],
   },
   {
     key: 3,
@@ -164,7 +165,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: true,
     name:
       'You can add a link between two tickets given their id using the form below',
-    labels: [{ color: '#ff78cb', name: 'actions' }],
+    labels: [{ color: trelloColors.pink, name: 'actions' }],
   },
   {
     key: 4,
@@ -175,7 +176,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: true,
     name:
       'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
-    labels: [{ color: '#ff78cb', name: 'actions' }],
+    labels: [{ color: trelloColors.pink, name: 'actions' }],
   },
   {
     key: 5,
@@ -186,7 +187,7 @@ myModel.nodeDataArray = [
     isComplexityRealVisible: false,
     name:
       'To delete a link, select it with your mouse and press the Delete key',
-    labels: [{ color: 'purple', name: 'tips' }],
+    labels: [{ color: trelloColors.purple, name: 'tips' }],
   },
   {
     key: 6,
@@ -196,7 +197,7 @@ myModel.nodeDataArray = [
     isComplexityEstimationVisible: false,
     isComplexityRealVisible: false,
     name: 'Dependencies will be stored on your Trello board!',
-    labels: [{ color: '#c377e0', name: 'tips' }],
+    labels: [{ color: trelloColors.purple, name: 'tips' }],
   },
   {
     key: 7,
