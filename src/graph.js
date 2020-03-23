@@ -223,7 +223,7 @@ window.myDiagram.linkTemplate = GO(
   GO(go.Shape, { strokeWidth: 5, stroke: '#555' })
 );
 
-window.myDiagram.addDiagramListener('SelectionDeleting', e => {
+window.myDiagram.addDiagramListener('SelectionDeleting', (e) => {
   const part = e.subject.first(); // e.subject is the myDiagram.selection collection,
   // so we'll get the first since we know we only have one selection
   if (part instanceof go.Link) {
@@ -233,8 +233,8 @@ window.myDiagram.addDiagramListener('SelectionDeleting', e => {
   }
 });
 
-window.myDiagram.addDiagramListener('SelectionMoved', e => {
-  e.subject.each(part => {
+window.myDiagram.addDiagramListener('SelectionMoved', (e) => {
+  e.subject.each((part) => {
     if (part.data.hasJustBeenLinked) {
       part.data.hasJustBeenLinked = false; // eslint-disable-line no-param-reassign
       part.isLayoutPositioned = true; // eslint-disable-line no-param-reassign

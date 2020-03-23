@@ -58,7 +58,7 @@ window.trelloHandler = new Vue({
       const vm = this;
       console.log('Successful authentication'); // eslint-disable-line no-console
       this.loading = true;
-      window.Trello.get('/member/me/boards').then(data => {
+      window.Trello.get('/member/me/boards').then((data) => {
         vm.boards = data;
         vm.loading = false;
 
@@ -72,11 +72,11 @@ window.trelloHandler = new Vue({
       const vm = this;
       this.loading = true;
       return window.Trello.get(`/lists/${this.selectedList}/cards`).then(
-        data => {
+        (data) => {
           vm.cards = data;
           vm.deleteUselessCards();
           vm.addOrUpdateCards();
-          vm.calculateDependenciesAsPromises().then(linkDataArray => {
+          vm.calculateDependenciesAsPromises().then((linkDataArray) => {
             window.myDiagram.model.linkDataArray = linkDataArray;
             vm.loading = false;
           });
@@ -122,7 +122,7 @@ window.trelloHandler = new Vue({
         window.graphHandler.addOrUpdateTicket({
           ticketId: card.idShort,
           ticketName: card.name,
-          ticketLabels: card.labels.map(ticketLabel => ({
+          ticketLabels: card.labels.map((ticketLabel) => ({
             color: trelloColors[ticketLabel.color],
             name: ticketLabel.name,
           })),
@@ -150,9 +150,9 @@ window.trelloHandler = new Vue({
       const promises = [];
       for (let iCard = 0; iCard < vm.cards.length; iCard += 1) {
         promises.push(
-          new Promise(resolve => {
+          new Promise((resolve) => {
             vm.getOrCreateDependencyChecklist(vm.cards[iCard]).then(
-              checklist => {
+              (checklist) => {
                 const ticketIds = vm.getDependentTicketsFromChecklist(
                   checklist
                 );
@@ -168,7 +168,7 @@ window.trelloHandler = new Vue({
           })
         );
       }
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         Promise.all(promises).then(() => {
           resolve(linkDataArray);
         });
@@ -215,12 +215,17 @@ window.trelloHandler = new Vue({
         console.warn('Fail adding dependency in Trello'); // eslint-disable-line no-console
         return false;
       }
-      return this.getOrCreateDependencyChecklist(childCard).then(checklist => {
-        const checkItem = {
-          name: parentCard.url,
-        };
-        window.Trello.post(`/checklists/${checklist.id}/checkItems`, checkItem);
-      });
+      return this.getOrCreateDependencyChecklist(childCard).then(
+        (checklist) => {
+          const checkItem = {
+            name: parentCard.url,
+          };
+          window.Trello.post(
+            `/checklists/${checklist.id}/checkItems`,
+            checkItem
+          );
+        }
+      );
     },
 
     deleteTrelloDependency(parentId, childId) {
@@ -239,18 +244,20 @@ window.trelloHandler = new Vue({
         console.warn('Fail deleting dependency in Trello'); // eslint-disable-line no-console
         return false;
       }
-      return this.getOrCreateDependencyChecklist(childCard).then(checklist => {
-        const ticketIds = vm.getDependentTicketsFromChecklist(checklist);
-        for (let i = 0; i < ticketIds.length; i += 1) {
-          if (ticketIds[i].ticketId === parentId) {
-            window.Trello.delete(
-              `/checklists/${checklist.id}/checkItems/${ticketIds[i].checkItemId}`
-            );
-            console.log('Dependency deleted'); // eslint-disable-line no-console
-            return;
+      return this.getOrCreateDependencyChecklist(childCard).then(
+        (checklist) => {
+          const ticketIds = vm.getDependentTicketsFromChecklist(checklist);
+          for (let i = 0; i < ticketIds.length; i += 1) {
+            if (ticketIds[i].ticketId === parentId) {
+              window.Trello.delete(
+                `/checklists/${checklist.id}/checkItems/${ticketIds[i].checkItemId}`
+              );
+              console.log('Dependency deleted'); // eslint-disable-line no-console
+              return;
+            }
           }
         }
-      });
+      );
     },
 
     getDependentTicketsFromChecklist(checklist) {
@@ -276,8 +283,8 @@ window.trelloHandler = new Vue({
     },
 
     getOrCreateDependencyChecklist(card) {
-      return new Promise(resolve => {
-        window.Trello.get(`/cards/${card.id}/checklists`).then(checklists => {
+      return new Promise((resolve) => {
+        window.Trello.get(`/cards/${card.id}/checklists`).then((checklists) => {
           for (let k = 0; k < checklists.length; k += 1) {
             if (checklists[k].name === 'Dependencies') {
               return resolve(checklists[k]);
@@ -287,7 +294,7 @@ window.trelloHandler = new Vue({
             name: 'Dependencies',
             idCard: card.id,
           };
-          return window.Trello.post('/checklists/', checklist).then(data => {
+          return window.Trello.post('/checklists/', checklist).then((data) => {
             resolve(data);
           });
         });

@@ -15,7 +15,7 @@ var deferred,
   wrapper,
   slice = [].slice;
 
-wrapper = function(window, jQuery, opts) {
+wrapper = function (window, jQuery, opts) {
   var $,
     Trello,
     apiEndpoint,
@@ -52,22 +52,22 @@ wrapper = function(window, jQuery, opts) {
   baseURL = apiEndpoint + '/' + version + '/';
   location = window.location;
   Trello = {
-    version: function() {
+    version: function () {
       return version;
     },
-    key: function() {
+    key: function () {
       return key;
     },
-    setKey: function(newKey) {
+    setKey: function (newKey) {
       key = newKey;
     },
-    token: function() {
+    token: function () {
       return token;
     },
-    setToken: function(newToken) {
+    setToken: function (newToken) {
       token = newToken;
     },
-    rest: function() {
+    rest: function () {
       var args, error, method, params, path, ref, success;
       (method = arguments[0]),
         (args = 2 <= arguments.length ? slice.call(arguments, 1) : []);
@@ -104,14 +104,14 @@ wrapper = function(window, jQuery, opts) {
       }
       return $.ajax(opts);
     },
-    authorized: function() {
+    authorized: function () {
       return token != null;
     },
-    deauthorize: function() {
+    deauthorize: function () {
       token = null;
       writeStorage('token', token);
     },
-    authorize: function(userOpts) {
+    authorize: function (userOpts) {
       var k, persistToken, ref, regexToken, scope, v;
       opts = $.extend(
         true,
@@ -129,7 +129,7 @@ wrapper = function(window, jQuery, opts) {
         userOpts
       );
       regexToken = /[&#]?token=([0-9a-f]{64})/;
-      persistToken = function() {
+      persistToken = function () {
         if (opts.persist && token != null) {
           return writeStorage('token', token);
         }
@@ -151,7 +151,7 @@ wrapper = function(window, jQuery, opts) {
       if (!opts.interactive) {
         return typeof opts.error === 'function' ? opts.error() : void 0;
       }
-      scope = (function() {
+      scope = (function () {
         var ref1, results;
         ref1 = opts.scope;
         results = [];
@@ -165,7 +165,7 @@ wrapper = function(window, jQuery, opts) {
       })().join(',');
       switch (opts.type) {
         case 'popup':
-          (function() {
+          (function () {
             var authWindow,
               height,
               left,
@@ -176,8 +176,8 @@ wrapper = function(window, jQuery, opts) {
               width;
             waitUntil(
               'authorized',
-              (function(_this) {
-                return function(isAuthorized) {
+              (function (_this) {
+                return function (isAuthorized) {
                   if (isAuthorized) {
                     persistToken();
                     return typeof opts.success === 'function'
@@ -217,7 +217,7 @@ wrapper = function(window, jQuery, opts) {
                 ',top=' +
                 top
             );
-            receiveMessage = function(event) {
+            receiveMessage = function (event) {
               var ref2;
               if (
                 event.origin !== authEndpoint ||
@@ -253,15 +253,15 @@ wrapper = function(window, jQuery, opts) {
           });
       }
     },
-    addCard: function(options, next) {
+    addCard: function (options, next) {
       var baseArgs, getCard;
       baseArgs = {
         mode: 'popup',
         source: key || window.location.host,
       };
-      getCard = function(callback) {
+      getCard = function (callback) {
         var height, left, returnUrl, top, width;
-        returnUrl = function(e) {
+        returnUrl = function (e) {
           var data;
           window.removeEventListener('message', returnUrl);
           try {
@@ -296,8 +296,8 @@ wrapper = function(window, jQuery, opts) {
       if (next != null) {
         return getCard(next);
       } else if (window.Promise) {
-        return new Promise(function(resolve, reject) {
-          return getCard(function(err, card) {
+        return new Promise(function (resolve, reject) {
+          return getCard(function (err, card) {
             if (err) {
               return reject(err);
             } else {
@@ -306,13 +306,13 @@ wrapper = function(window, jQuery, opts) {
           });
         });
       } else {
-        return getCard(function() {});
+        return getCard(function () {});
       }
     },
   };
   ref = ['GET', 'PUT', 'POST', 'DELETE'];
-  fn = function(type) {
-    return (Trello[type.toLowerCase()] = function() {
+  fn = function (type) {
+    return (Trello[type.toLowerCase()] = function () {
       return this.rest.apply(this, [type].concat(slice.call(arguments)));
     });
   };
@@ -331,9 +331,9 @@ wrapper = function(window, jQuery, opts) {
     'organizations',
     'lists',
   ];
-  fn1 = function(collection) {
+  fn1 = function (collection) {
     return (Trello[collection] = {
-      get: function(id, params, success, error) {
+      get: function (id, params, success, error) {
         return Trello.get(collection + '/' + id, params, success, error);
       },
     });
@@ -343,7 +343,7 @@ wrapper = function(window, jQuery, opts) {
     fn1(collection);
   }
   window.Trello = Trello;
-  authorizeURL = function(args) {
+  authorizeURL = function (args) {
     var baseArgs;
     baseArgs = {
       response_type: 'token',
@@ -357,7 +357,7 @@ wrapper = function(window, jQuery, opts) {
       $.param($.extend(baseArgs, args))
     );
   };
-  parseRestArgs = function(arg) {
+  parseRestArgs = function (arg) {
     var error, params, path, success;
     (path = arg[0]), (params = arg[1]), (success = arg[2]), (error = arg[3]);
     if (isFunction(params)) {
@@ -371,10 +371,10 @@ wrapper = function(window, jQuery, opts) {
   localStorage = window.localStorage;
   if (localStorage != null) {
     storagePrefix = 'trello_';
-    readStorage = function(key) {
+    readStorage = function (key) {
       return localStorage[storagePrefix + key];
     };
-    writeStorage = function(key, value) {
+    writeStorage = function (key, value) {
       if (value === null) {
         return delete localStorage[storagePrefix + key];
       } else {
@@ -382,7 +382,7 @@ wrapper = function(window, jQuery, opts) {
       }
     };
   } else {
-    readStorage = writeStorage = function() {};
+    readStorage = writeStorage = function () {};
   }
 };
 
@@ -390,7 +390,7 @@ deferred = {};
 
 ready = {};
 
-waitUntil = function(name, fx) {
+waitUntil = function (name, fx) {
   if (ready[name] != null) {
     return fx(ready[name]);
   } else {
@@ -401,7 +401,7 @@ waitUntil = function(name, fx) {
   }
 };
 
-isReady = function(name, value) {
+isReady = function (name, value) {
   var fx, fxs, i, len;
   ready[name] = value;
   if (deferred[name]) {
@@ -414,7 +414,7 @@ isReady = function(name, value) {
   }
 };
 
-isFunction = function(val) {
+isFunction = function (val) {
   return typeof val === 'function';
 };
 

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import './graph';
 
-const parseTicketName = name => {
+const parseTicketName = (name) => {
   const matches = name.match(
     /^(?:\[(?<complexityReal>\d+[.,]?\d*)\])? ?(?:\((?<complexityEstimation>\d+[.,]?\d*)\))?(?: ?)(?<name>.+)$/
   );
