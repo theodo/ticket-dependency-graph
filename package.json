@@ -19,7 +19,7 @@
     "acorn": "^7.1.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.1",
     "prettier": "^1.19.1",
     "webpack": "^4.42.0",
@@ -27,7 +27,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "gojs": "^2.1.10",
+    "gojs": "^2.1.11",
     "jquery": "^3.4.1",
     "vue": "^2.6.11",
     "vue-gtag": "^1.6.2"
