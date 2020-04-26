@@ -10,3 +10,5 @@ export const trelloColors = {
   sky: '#00c2e0',
   yellow: '#f2d600',
 };
+
+export const linkColor = '#555';
