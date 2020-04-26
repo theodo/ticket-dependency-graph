@@ -143,7 +143,7 @@ myModel.nodeDataArray = [
     isComplexityEstimationVisible: true,
     isComplexityRealVisible: true,
     name: 'Connect to Trello to use the TDG',
-    labels: [{ color: trelloColors.blue, name: 'connexion' }],
+    labels: [{ color: trelloColors.blue, name: 'connection' }],
   },
   {
     key: 2,
