@@ -1,5 +1,5 @@
 import go from 'gojs';
-import trelloColors from './trelloColors';
+import { trelloColors, linkColor } from './colors';
 
 const GO = go.GraphObject.make;
 
@@ -143,7 +143,7 @@ myModel.nodeDataArray = [
     isComplexityEstimationVisible: true,
     isComplexityRealVisible: true,
     name: 'Connect to Trello to use the TDG',
-    labels: [{ color: trelloColors.blue, name: 'connexion' }],
+    labels: [{ color: trelloColors.blue, name: 'connection' }],
   },
   {
     key: 2,
@@ -220,7 +220,21 @@ myModel.linkDataArray = [
 
 window.myDiagram.linkTemplate = GO(
   go.Link,
-  GO(go.Shape, { strokeWidth: 5, stroke: '#555' })
+  GO(go.Shape, { strokeWidth: 5, stroke: linkColor }),
+  GO(
+    go.Shape,
+    {
+      toArrow: 'RoundedTriangle',
+      // Set segmentIndex to -Infinity to position the arrow tip at the link center.
+      // We don't want to position it at the link end (as is default) since that would make it
+      // overlap the link corners, making for a less pleasurable visual experience
+      segmentIndex: -Infinity,
+      // However, we want the _arrow_ to be centered rather than its _tip_,
+      // so we offset it by about half an arrow length along the link.
+      segmentOffset: new go.Point(10, 0),
+    },
+    { scale: 1.9, fill: linkColor, stroke: linkColor }
+  )
 );
 
 window.myDiagram.addDiagramListener('SelectionDeleting', (e) => {

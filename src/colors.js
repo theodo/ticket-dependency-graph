@@ -1,4 +1,4 @@
-export default {
+export const trelloColors = {
   black: '#344563',
   blue: '#0079bf',
   green: '#61bd4f',
@@ -10,3 +10,5 @@ export default {
   sky: '#00c2e0',
   yellow: '#f2d600',
 };
+
+export const linkColor = '#555';

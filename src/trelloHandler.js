@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import trelloColors from './trelloColors';
+import { trelloColors } from './colors';
 import './trelloApiHelper';
 import './graphHandler';
 
