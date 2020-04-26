@@ -8,7 +8,19 @@ module.exports = {
     filename: 'app.js',
   },
   module: {
-    rules: [{ test: /\.css$/, loader: 'style!css' }],
+    rules: [
+      { test: /\.css$/, loader: 'style!css' },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
   },
   devServer: {
     contentBase: './dist/',
