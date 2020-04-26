@@ -1,4 +1,4 @@
-export default {
+export const trelloColors = {
   black: '#344563',
   blue: '#0079bf',
   green: '#61bd4f',

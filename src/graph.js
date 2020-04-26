@@ -1,5 +1,5 @@
 import go from 'gojs';
-import trelloColors from './trelloColors';
+import { trelloColors } from './colors';
 
 const GO = go.GraphObject.make;
 
