@@ -41,7 +41,7 @@ On every commit or merge on master, the app is automatically deployed to [Github
 ## Known issues
 
 - Tickets that are moved to another column disappear from the graph
-- [More issues](https://github.com/Varal7/ticket-dependency-graph/issues)
+- [More issues](https://github.com/theodo/ticket-dependency-graph/issues)
 
 ## Feature and bug fix backlog
 
