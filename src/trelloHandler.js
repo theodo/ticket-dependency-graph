@@ -5,6 +5,7 @@ import './graphHandler';
 
 const lastBoardChoice = 'lastBoardChoice';
 const lastListChoice = 'lastListChoice';
+const lastLabelChoice = 'lastLabelChoice';
 
 window.trelloHandler = new Vue({
   el: '#trello',
@@ -14,7 +15,9 @@ window.trelloHandler = new Vue({
     boards: null,
     selectedBoard: '',
     lists: null,
+    labels: null,
     selectedList: '',
+    selectedLabel: '',
     cards: null,
     loading: false,
     trelloUrl: null,
@@ -25,7 +28,7 @@ window.trelloHandler = new Vue({
       const boardId = event.target.value;
 
       this.selectBoard(boardId).then(() => {
-        window.localStorage.setItem(lastBoardChoice, boardId);
+        this.persistChoicesInLocalStorage();
       });
     },
 
@@ -33,8 +36,22 @@ window.trelloHandler = new Vue({
       const listId = event.target.value;
 
       this.selectList(listId).then(() => {
-        window.localStorage.setItem(lastListChoice, listId);
+        this.persistChoicesInLocalStorage();
       });
+    },
+
+    onLabelChange(event) {
+      const labelId = event.target.value;
+
+      this.selectLabel(labelId).then(() => {
+        this.persistChoicesInLocalStorage();
+      });
+    },
+
+    persistChoicesInLocalStorage() {
+      window.localStorage.setItem(lastBoardChoice, this.selectedBoard);
+      window.localStorage.setItem(lastListChoice, this.selectedList);
+      window.localStorage.setItem(lastLabelChoice, this.selectedLabel);
     },
 
     authorize() {
@@ -64,37 +81,54 @@ window.trelloHandler = new Vue({
 
         // Thanks to Vue.nextTick, we wait for Vue to update the DOM, for the board dropdown to be filled with
         // the list of boards before retrieveLastBoardAndListChoice sets a chosen value in the board dropdown.
-        Vue.nextTick(vm.retrieveLastBoardAndListChoice);
+        Vue.nextTick(vm.retrievePersistedChoicesFromLocalStorage);
       });
     },
 
     refresh() {
       const vm = this;
       this.loading = true;
-      return window.Trello.get(`/lists/${this.selectedList}/cards`).then(
-        (data) => {
-          vm.cards = data;
-          vm.deleteUselessCards();
-          vm.addOrUpdateCards();
-          vm.calculateDependenciesAsPromises().then((linkDataArray) => {
-            window.myDiagram.model.linkDataArray = linkDataArray;
-            vm.loading = false;
-          });
-        }
-      );
+
+      let cardsPromise;
+      if (this.selectedList) {
+        cardsPromise = window.Trello.get(`/lists/${this.selectedList}/cards`);
+      } else {
+        cardsPromise = window.Trello.get(
+          `/boards/${this.selectedBoard}/cards`
+        ).then((cards) =>
+          cards.filter((card) =>
+            card.labels.some((label) => label.id === this.selectedLabel)
+          )
+        );
+      }
+
+      return cardsPromise.then((data) => {
+        vm.cards = data;
+        vm.deleteUselessCards();
+        vm.addOrUpdateCards();
+        vm.calculateDependenciesAsPromises().then((linkDataArray) => {
+          window.myDiagram.model.linkDataArray = linkDataArray;
+          vm.loading = false;
+        });
+      });
     },
 
-    retrieveLastBoardAndListChoice() {
+    retrievePersistedChoicesFromLocalStorage() {
       const boardChoiceId = window.localStorage.getItem(lastBoardChoice);
       const listChoiceId = window.localStorage.getItem(lastListChoice);
+      const labelChoiceId = window.localStorage.getItem(lastLabelChoice);
 
-      if (!boardChoiceId || !listChoiceId) {
+      if (!boardChoiceId || (!listChoiceId && !labelChoiceId)) {
         return Promise.resolve();
       }
 
       return this.selectBoard(boardChoiceId).then(() =>
         Vue.nextTick(() => {
-          this.selectList(listChoiceId);
+          if (listChoiceId) {
+            this.selectList(listChoiceId);
+          } else {
+            this.selectLabel(labelChoiceId);
+          }
         })
       );
     },
@@ -105,14 +139,23 @@ window.trelloHandler = new Vue({
       return Promise.all([
         window.Trello.get(`/boards/${boardId}/lists`),
         window.Trello.get(`/boards/${boardId}/shortUrl`),
-      ]).then(([lists, trelloUrl]) => {
+        window.Trello.get(`/boards/${boardId}/labels`),
+      ]).then(([lists, trelloUrl, labels]) => {
         this.lists = lists;
         this.trelloUrl = trelloUrl._value; // eslint-disable-line no-underscore-dangle
+        this.labels = labels;
       });
     },
 
     selectList(listId) {
       this.selectedList = listId;
+      this.selectedLabel = '';
+      return this.refresh();
+    },
+
+    selectLabel(labelId) {
+      this.selectedLabel = labelId;
+      this.selectedList = '';
       return this.refresh();
     },
 
