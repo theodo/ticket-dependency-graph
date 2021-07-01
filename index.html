@@ -24,7 +24,7 @@
           <div class="indeterminate"></div>
         </div>
         <div class="row">
-          <div class="col s2">
+          <div class="col s1">
             <button
               type="button"
               class="btn"
@@ -42,37 +42,52 @@
               Refresh
             </button>
           </div>
-          <div class="col s4">
+          <div class="col s3">
             <select
               v-model="selectedBoard"
               v-if="boards!=null"
               v-on:change="onBoardChange"
               class="browser-default"
             >
-              <option value="" disabled selected style="display: none;"
-                >Choose a board</option
-              >
-              <option v-for="board in boards" v-bind:value="board.id"
-                >{{ board.name }}</option
-              >
+              <option value="" disabled selected style="display: none">
+                Choose a board
+              </option>
+              <option v-for="board in boards" v-bind:value="board.id">
+                {{ board.name }}
+              </option>
             </select>
           </div>
-          <div class="col s4">
+          <div class="col s3">
             <select
               v-model="selectedList"
               v-if="lists!=null"
               v-on:change="onListChange"
               class="browser-default"
             >
-              <option value="" disabled selected style="display: none;"
-                >Choose the sprint backlog column</option
-              >
-              <option v-for="list in lists" v-bind:value="list.id"
-                >{{ list.name }}</option
-              >
+              <option value="" disabled selected style="display: none">
+                Choose the sprint backlog column
+              </option>
+              <option v-for="list in lists" v-bind:value="list.id">
+                {{ list.name }}
+              </option>
             </select>
           </div>
-          <div class="col s2">
+          <div class="col s3">
+            <select
+              v-model="selectedLabel"
+              v-if="labels!=null"
+              v-on:change="onLabelChange"
+              class="browser-default"
+            >
+              <option value="" disabled selected style="display: none">
+                Or choose a label
+              </option>
+              <option v-for="label in labels" v-bind:value="label.id">
+                {{ label.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col s1">
             <a
               :href="trelloUrl"
               target="_blank"
@@ -112,7 +127,7 @@
               <textarea
                 id="dataAsJson"
                 v-model="dataAsJson"
-                style="width: 100%; height: 250px;"
+                style="width: 100%; height: 250px"
               >
               </textarea>
             </div>
