@@ -45,5 +45,5 @@ On every commit or merge on master, the app is automatically deployed to [Github
 
 ## Feature and bug fix backlog
 
-Managed on Trello: https://trello.com/b/FUZ31YuG/ticket-dependency-graph  
-You must be a member of the Theodo team on Trello to view it.
+Managed on Trello: https://trello.com/b/9AaI3LEO/ticket-dependency-graph  
+You can ask access to @ivanosevitch on GitHub.
