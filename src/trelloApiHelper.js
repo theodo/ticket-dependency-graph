@@ -15,6 +15,11 @@ var deferred,
   wrapper,
   slice = [].slice;
 
+// The local storage key must be related to the ticket dependency graph, to avoid conflict with the other
+// apps hosted on https://theodo.github.io/
+// Indeed, local storage keys are shared among apps from the same host (more exactly, among the protocol://host:port combination)
+const tokenStorageKey = 'ticket-dependency-graph-token';
+
 wrapper = function (window, jQuery, opts) {
   var $,
     Trello,
@@ -109,7 +114,7 @@ wrapper = function (window, jQuery, opts) {
     },
     deauthorize: function () {
       token = null;
-      writeStorage('token', token);
+      writeStorage(tokenStorageKey, token);
     },
     authorize: function (userOpts) {
       var k, persistToken, ref, regexToken, scope, v;
@@ -131,12 +136,12 @@ wrapper = function (window, jQuery, opts) {
       regexToken = /[&#]?token=([0-9a-f]{64})/;
       persistToken = function () {
         if (opts.persist && token != null) {
-          return writeStorage('token', token);
+          return writeStorage(tokenStorageKey, token);
         }
       };
       if (opts.persist) {
         if (token == null) {
-          token = readStorage('token');
+          token = readStorage(tokenStorageKey);
         }
       }
       if (token == null) {
