@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress",
-    "start": "webpack-dev-server --colors",
+    "start": "webpack serve --open",
     "lint": "eslint 'src/**/*.js'"
   },
   "repository": {
@@ -35,9 +35,9 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "prettier": "2.5.0",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.2"
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
   },
   "dependencies": {
     "gojs": "^2.1.36",
