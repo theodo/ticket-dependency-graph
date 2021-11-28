@@ -26,10 +26,10 @@
     "node": "^16.13.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
-    "acorn": "^8.1.0",
-    "babel-loader": "^8.2.2",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "acorn": "^8.6.0",
+    "babel-loader": "^8.2.3",
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
