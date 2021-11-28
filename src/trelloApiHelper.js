@@ -394,9 +394,8 @@ waitUntil = function (name, fx) {
   if (ready[name] != null) {
     return fx(ready[name]);
   } else {
-    return (deferred[name] != null
-      ? deferred[name]
-      : (deferred[name] = [])
+    return (
+      deferred[name] != null ? deferred[name] : (deferred[name] = [])
     ).push(fx);
   }
 };

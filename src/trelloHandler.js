@@ -201,9 +201,8 @@ window.trelloHandler = new Vue({
           new Promise((resolve) => {
             vm.getOrCreateDependencyChecklist(vm.cards[iCard]).then(
               (checklist) => {
-                const ticketIds = vm.getDependentTicketsFromChecklist(
-                  checklist
-                );
+                const ticketIds =
+                  vm.getDependentTicketsFromChecklist(checklist);
                 for (let j = 0; j < ticketIds.length; j += 1) {
                   linkDataArray.push({
                     from: ticketIds[j].ticketId,
