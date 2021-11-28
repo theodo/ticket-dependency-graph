@@ -4,7 +4,7 @@ var opts = {
   apiEndpoint: 'https://api.trello.com',
   authEndpoint: 'https://trello.com',
   intentEndpoint: 'https://trello.com',
-  key: '9685b92ee42080b94102b49fe50d2bb1',
+  key: '39eb391c4ba671275f13eb4ee1d51116',
 };
 
 var deferred,
@@ -394,9 +394,8 @@ waitUntil = function (name, fx) {
   if (ready[name] != null) {
     return fx(ready[name]);
   } else {
-    return (deferred[name] != null
-      ? deferred[name]
-      : (deferred[name] = [])
+    return (
+      deferred[name] != null ? deferred[name] : (deferred[name] = [])
     ).push(fx);
   }
 };

@@ -98,10 +98,10 @@ window.myDiagram.nodeTemplate = GO(
   {
     mouseDrop(e, node) {
       const { diagram } = node;
-      const selnode = diagram.selection.first(); // assume just one Node in selection
-      if (selnode instanceof go.Node) {
-        window.graphHandler.addDependency(node.data.key, selnode.data.key);
-        selnode.data.hasJustBeenLinked = true;
+      const selectedNode = diagram.selection.first(); // assume just one Node in selection
+      if (selectedNode instanceof go.Node) {
+        window.graphHandler.addDependency(node.data.key, selectedNode.data.key);
+        selectedNode.data.hasJustBeenLinked = true;
         // eslint-disable-next-line no-param-reassign
         node.isLayoutPositioned = true;
       }
@@ -163,8 +163,7 @@ myModel.nodeDataArray = [
     complexityReal: 5,
     isComplexityEstimationVisible: false,
     isComplexityRealVisible: true,
-    name:
-      'You can add a link between two tickets given their id using the form below',
+    name: 'You can add a link between two tickets given their id using the form below',
     labels: [{ color: trelloColors.pink, name: 'actions' }],
   },
   {
@@ -174,8 +173,7 @@ myModel.nodeDataArray = [
     complexityReal: 1,
     isComplexityEstimationVisible: true,
     isComplexityRealVisible: true,
-    name:
-      'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
+    name: 'Or you can use Drag&Drop: simply drag a ticket over a ticket it depends on',
     labels: [{ color: trelloColors.pink, name: 'actions' }],
   },
   {
@@ -185,8 +183,7 @@ myModel.nodeDataArray = [
     complexityReal: null,
     isComplexityEstimationVisible: true,
     isComplexityRealVisible: false,
-    name:
-      'To delete a link, select it with your mouse and press the Delete key',
+    name: 'To delete a link, select it with your mouse and press the Delete key',
     labels: [{ color: trelloColors.purple, name: 'tips' }],
   },
   {

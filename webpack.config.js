@@ -1,15 +1,11 @@
-const path = require('path');
-
 module.exports = {
   entry: './src/main.js',
   mode: 'development',
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: 'app.js',
   },
   module: {
     rules: [
-      { test: /\.css$/, loader: 'style!css' },
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
@@ -23,7 +19,7 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: './dist/',
+    static: './dist',
   },
   resolve: {
     alias: {

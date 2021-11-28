@@ -4,39 +4,44 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress",
-    "start": "webpack-dev-server --colors",
+    "start": "webpack serve --open",
     "lint": "eslint 'src/**/*.js'"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/theodo/ticket-dependency-graph.git"
   },
-  "author": "varal7",
+  "contributors": [
+    "varal7",
+    "Theodo"
+  ],
   "license": "ISC",
   "homepage": "https://github.com/theodo/ticket-dependency-graph#readme",
   "browserslist": [
     "defaults"
   ],
+  "engines": {
+    "node": "^16.13.0"
+  },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
-    "acorn": "^8.1.0",
-    "babel-loader": "^8.2.2",
-    "eslint": "^7.21.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "prettier": "2.2.1",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.2"
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "acorn": "^8.6.0",
+    "babel-loader": "^8.2.3",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "prettier": "2.5.0",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
   },
   "dependencies": {
-    "gojs": "^2.1.36",
+    "gojs": "^2.1.54",
     "jquery": "^3.6.0",
-    "vue": "^2.6.12",
-    "vue-gtag": "^1.11.0"
+    "vue": "^2.6.14",
+    "vue-gtag": "^1.16.1"
   }
 }
