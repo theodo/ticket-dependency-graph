@@ -19,6 +19,9 @@
   "browserslist": [
     "defaults"
   ],
+  "engines": {
+    "node": "^16.13.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
