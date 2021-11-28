@@ -98,10 +98,10 @@ window.myDiagram.nodeTemplate = GO(
   {
     mouseDrop(e, node) {
       const { diagram } = node;
-      const selnode = diagram.selection.first(); // assume just one Node in selection
-      if (selnode instanceof go.Node) {
-        window.graphHandler.addDependency(node.data.key, selnode.data.key);
-        selnode.data.hasJustBeenLinked = true;
+      const selectedNode = diagram.selection.first(); // assume just one Node in selection
+      if (selectedNode instanceof go.Node) {
+        window.graphHandler.addDependency(node.data.key, selectedNode.data.key);
+        selectedNode.data.hasJustBeenLinked = true;
         // eslint-disable-next-line no-param-reassign
         node.isLayoutPositioned = true;
       }
