@@ -13,7 +13,10 @@
     "type": "git",
     "url": "git+https://github.com/theodo/ticket-dependency-graph.git"
   },
-  "author": "varal7",
+  "contributors": [
+    "varal7",
+    "Theodo"
+  ],
   "license": "ISC",
   "homepage": "https://github.com/theodo/ticket-dependency-graph#readme",
   "browserslist": [
