@@ -55,7 +55,12 @@ window.trelloHandler = new Vue({
     },
 
     authorize() {
-      // window.Trello.deauthorize(); // Fix this
+      // Deauthorize user access before re-authorizing it.
+      //
+      // This is used to force the user to generate a new token after the API key changed in https://github.com/theodo/ticket-dependency-graph/pull/49
+      // However, deauthorizing before every authorization also lengthen the user flow, adding otherwise unnecessary steps.
+      // Issue to address this: https://github.com/theodo/ticket-dependency-graph/issues/50
+      window.Trello.deauthorize();
       window.Trello.authorize({
         type: 'popup',
         name: 'Ticket Dependency Graph',
