@@ -4,7 +4,8 @@ orbs:
 
 jobs:
   build_deploy:
-    executor: gh-pages/default
+    docker:
+      - image: cimg/node:16.13.0
     steps:
       - checkout
       - run: npm install
