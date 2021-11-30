@@ -8,7 +8,7 @@ jobs:
       - image: cimg/node:16.13.0
     steps:
       - checkout
-      - run: npm install
+      - run: npm ci
       - run: npm run build
       - gh-pages/deploy:
           ssh-fingerprints: '9b:f8:a1:6f:dc:1f:ab:99:f5:f5:92:b8:da:86:b3:ab'
