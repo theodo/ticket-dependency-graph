@@ -98,7 +98,6 @@ window.trelloHandler = new Vue({
         cardsPromise = window.Trello.get(`/lists/${this.selectedList}/cards`);
       }
       if (this.selectedLabel) {
-        console.log(cardsPromise)
         cardsPromise = cardsPromise || window.Trello.get(
             `/boards/${this.selectedBoard}/cards`
         )
