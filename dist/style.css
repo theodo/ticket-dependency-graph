@@ -5,4 +5,5 @@
 
 .row {
   margin-bottom: 5px;
+  white-space: nowrap
 }
