@@ -88,13 +88,20 @@ window.trelloHandler = new Vue({
       const vm = this;
       this.loading = true;
 
+      if (!this.selectedList && !this.selectedLabel){
+        this.loading = false;
+        return Promise.resolve();
+      }
+
       let cardsPromise;
       if (this.selectedList) {
         cardsPromise = window.Trello.get(`/lists/${this.selectedList}/cards`);
-      } else {
-        cardsPromise = window.Trello.get(
-          `/boards/${this.selectedBoard}/cards`
-        ).then((cards) =>
+      }
+      if (this.selectedLabel) {
+        cardsPromise = cardsPromise || window.Trello.get(
+            `/boards/${this.selectedBoard}/cards`
+        )
+        cardsPromise = cardsPromise.then((cards) =>
           cards.filter((card) =>
             card.labels.some((label) => label.id === this.selectedLabel)
           )
@@ -124,10 +131,12 @@ window.trelloHandler = new Vue({
       return this.selectBoard(boardChoiceId).then(() =>
         Vue.nextTick(() => {
           if (listChoiceId) {
-            this.selectList(listChoiceId);
-          } else {
-            this.selectLabel(labelChoiceId);
+            this.selectedList = listChoiceId;
           }
+          if (labelChoiceId){
+            this.selectedLabel = labelChoiceId;
+          }
+          this.refresh();
         })
       );
     },
@@ -148,13 +157,11 @@ window.trelloHandler = new Vue({
 
     selectList(listId) {
       this.selectedList = listId;
-      this.selectedLabel = '';
       return this.refresh();
     },
 
     selectLabel(labelId) {
       this.selectedLabel = labelId;
-      this.selectedList = '';
       return this.refresh();
     },
 

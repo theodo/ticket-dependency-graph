@@ -64,8 +64,8 @@
               v-on:change="onListChange"
               class="browser-default"
             >
-              <option value="" disabled selected style="display: none">
-                Choose the sprint backlog column
+              <option value="" selected>
+                Filter by column
               </option>
               <option v-for="list in lists" v-bind:value="list.id">
                 {{ list.name }}
@@ -79,8 +79,8 @@
               v-on:change="onLabelChange"
               class="browser-default"
             >
-              <option value="" disabled selected style="display: none">
-                Or choose a label
+              <option value="" selected>
+                Filter by label
               </option>
               <option v-for="label in labels" v-bind:value="label.id">
                 {{ label.name }}
@@ -93,7 +93,7 @@
               target="_blank"
               class="btn right"
               v-if="trelloUrl!=null"
-              >Open Board</a
+              >Open Trello board</a
             >
           </div>
         </div>
