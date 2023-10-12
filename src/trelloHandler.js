@@ -90,7 +90,7 @@ window.trelloHandler = new Vue({
 
       if (!this.selectedList && !this.selectedLabel){
         this.loading = false;
-        return;
+        return Promise.resolve();
       }
 
       let cardsPromise;
@@ -131,10 +131,12 @@ window.trelloHandler = new Vue({
       return this.selectBoard(boardChoiceId).then(() =>
         Vue.nextTick(() => {
           if (listChoiceId) {
-            this.selectList(listChoiceId);
-          } else {
-            this.selectLabel(labelChoiceId);
+            this.selectedList = listChoiceId;
           }
+          if (labelChoiceId){
+            this.selectedLabel = labelChoiceId;
+          }
+          this.refresh();
         })
       );
     },
